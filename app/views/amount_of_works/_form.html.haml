@@ -1,0 +1,25 @@
+= form_for @amount_of_work do |f|
+  - if @amount_of_work.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@amount_of_work.errors.count, "error")} prohibited this amount_of_work from being saved:"
+      %ul
+        - @amount_of_work.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :tiny
+    = f.text_field :tiny
+  .field
+    = f.label :little
+    = f.text_field :little
+  .field
+    = f.label :fair
+    = f.text_field :fair
+  .field
+    = f.label :large
+    = f.text_field :large
+  .field
+    = f.label :huge
+    = f.text_field :huge
+  .actions
+    = f.submit 'Save'

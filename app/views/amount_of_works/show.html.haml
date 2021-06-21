@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Tiny:
+  = @amount_of_work.tiny
+%p
+  %b Little:
+  = @amount_of_work.little
+%p
+  %b Fair:
+  = @amount_of_work.fair
+%p
+  %b Large:
+  = @amount_of_work.large
+%p
+  %b Huge:
+  = @amount_of_work.huge
+
+= link_to 'Edit', edit_amount_of_work_path(@amount_of_work)
+\|
+= link_to 'Back', amount_of_works_path

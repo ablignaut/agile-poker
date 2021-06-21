@@ -1,0 +1,2 @@
+module AmountOfWorksHelper
+end
