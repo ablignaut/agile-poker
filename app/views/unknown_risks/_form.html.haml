@@ -1,0 +1,22 @@
+= form_for @unknown_risk do |f|
+  - if @unknown_risk.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@unknown_risk.errors.count, "error")} prohibited this unknown_risk from being saved:"
+      %ul
+        - @unknown_risk.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :none
+    = f.text_field :none
+  .field
+    = f.label :low
+    = f.text_field :low
+  .field
+    = f.label :some
+    = f.text_field :some
+  .field
+    = f.label :many
+    = f.text_field :many
+  .actions
+    = f.submit 'Save'

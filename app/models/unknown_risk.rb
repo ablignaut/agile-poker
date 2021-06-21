@@ -1,0 +1,2 @@
+class UnknownRisk < ApplicationRecord
+end

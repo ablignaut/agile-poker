@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b None:
+  = @unknown_risk.none
+%p
+  %b Low:
+  = @unknown_risk.low
+%p
+  %b Some:
+  = @unknown_risk.some
+%p
+  %b Many:
+  = @unknown_risk.many
+
+= link_to 'Edit', edit_unknown_risk_path(@unknown_risk)
+\|
+= link_to 'Back', unknown_risks_path

@@ -1,0 +1,27 @@
+%h1 Listing unknown_risks
+
+%table
+  %thead
+    %tr
+      %th None
+      %th Low
+      %th Some
+      %th Many
+      %th
+      %th
+      %th
+
+  %tbody
+    - @unknown_risks.each do |unknown_risk|
+      %tr
+        %td= unknown_risk.none
+        %td= unknown_risk.low
+        %td= unknown_risk.some
+        %td= unknown_risk.many
+        %td= link_to 'Show', unknown_risk
+        %td= link_to 'Edit', edit_unknown_risk_path(unknown_risk)
+        %td= link_to 'Destroy', unknown_risk, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Unknown risk', new_unknown_risk_path
