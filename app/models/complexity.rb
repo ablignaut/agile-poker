@@ -1,0 +1,2 @@
+class Complexity < ApplicationRecord
+end

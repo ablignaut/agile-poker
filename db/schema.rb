@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_21_151624) do
+ActiveRecord::Schema.define(version: 2021_06_21_151809) do
 
   create_table "amount_of_works", force: :cascade do |t|
     t.decimal "tiny"
@@ -18,6 +18,16 @@ ActiveRecord::Schema.define(version: 2021_06_21_151624) do
     t.decimal "fair"
     t.decimal "large"
     t.decimal "huge"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "complexities", force: :cascade do |t|
+    t.decimal "none"
+    t.decimal "little"
+    t.decimal "fair"
+    t.decimal "complex"
+    t.decimal "very_complex"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

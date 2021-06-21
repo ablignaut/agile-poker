@@ -1,0 +1,29 @@
+%h1 Listing complexities
+
+%table
+  %thead
+    %tr
+      %th None
+      %th Little
+      %th Fair
+      %th Complex
+      %th Very complex
+      %th
+      %th
+      %th
+
+  %tbody
+    - @complexities.each do |complexity|
+      %tr
+        %td= complexity.none
+        %td= complexity.little
+        %td= complexity.fair
+        %td= complexity.complex
+        %td= complexity.very_complex
+        %td= link_to 'Show', complexity
+        %td= link_to 'Edit', edit_complexity_path(complexity)
+        %td= link_to 'Destroy', complexity, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Complexity', new_complexity_path

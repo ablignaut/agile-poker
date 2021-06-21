@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b None:
+  = @complexity.none
+%p
+  %b Little:
+  = @complexity.little
+%p
+  %b Fair:
+  = @complexity.fair
+%p
+  %b Complex:
+  = @complexity.complex
+%p
+  %b Very complex:
+  = @complexity.very_complex
+
+= link_to 'Edit', edit_complexity_path(@complexity)
+\|
+= link_to 'Back', complexities_path

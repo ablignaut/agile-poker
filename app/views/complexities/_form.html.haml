@@ -1,0 +1,25 @@
+= form_for @complexity do |f|
+  - if @complexity.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@complexity.errors.count, "error")} prohibited this complexity from being saved:"
+      %ul
+        - @complexity.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :none
+    = f.text_field :none
+  .field
+    = f.label :little
+    = f.text_field :little
+  .field
+    = f.label :fair
+    = f.text_field :fair
+  .field
+    = f.label :complex
+    = f.text_field :complex
+  .field
+    = f.label :very_complex
+    = f.text_field :very_complex
+  .actions
+    = f.submit 'Save'
