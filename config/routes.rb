@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'main#index'
   resources :games
   resources :unknown_risks
   resources :complexities
