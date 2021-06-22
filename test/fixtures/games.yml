@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  amount_of_work: one
+  complexity: one
+  unknown_risk: one
+
+two:
+  name: MyString
+  amount_of_work: two
+  complexity: two
+  unknown_risk: two

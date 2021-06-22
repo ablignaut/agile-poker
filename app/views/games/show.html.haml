@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @game.name
+%p
+  %b Amount of work:
+  = @game.amount_of_work
+%p
+  %b Complexity:
+  = @game.complexity
+%p
+  %b Unknown risk:
+  = @game.unknown_risk
+
+= link_to 'Edit', edit_game_path(@game)
+\|
+= link_to 'Back', games_path

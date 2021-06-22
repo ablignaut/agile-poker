@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :games
   resources :unknown_risks
   resources :complexities
   resources :amount_of_works

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_21_151922) do
+ActiveRecord::Schema.define(version: 2021_06_21_152054) do
 
   create_table "amount_of_works", force: :cascade do |t|
     t.decimal "tiny"
@@ -32,6 +32,18 @@ ActiveRecord::Schema.define(version: 2021_06_21_151922) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "games", force: :cascade do |t|
+    t.string "name"
+    t.integer "amount_of_work_id", null: false
+    t.integer "complexity_id", null: false
+    t.integer "unknown_risk_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amount_of_work_id"], name: "index_games_on_amount_of_work_id"
+    t.index ["complexity_id"], name: "index_games_on_complexity_id"
+    t.index ["unknown_risk_id"], name: "index_games_on_unknown_risk_id"
+  end
+
   create_table "unknown_risks", force: :cascade do |t|
     t.decimal "none"
     t.decimal "low"
@@ -41,4 +53,7 @@ ActiveRecord::Schema.define(version: 2021_06_21_151922) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "games", "amount_of_works"
+  add_foreign_key "games", "complexities"
+  add_foreign_key "games", "unknown_risks"
 end
