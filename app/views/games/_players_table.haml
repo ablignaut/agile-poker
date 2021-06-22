@@ -1,0 +1,23 @@
+%table
+  %tr
+    %th{:colspan => 4}
+      Player Votes
+  %tr
+    %th{:align => :left}
+      Player
+    %th{:align => :left}
+      Complexity
+    %th{:align => :left}
+      Amount of Work
+    %th{:align => :left}
+      Unknowns / Risks
+  - players.each do |player|
+    %tr
+      %td
+        = player['name']
+      %td
+        = player['complexity']
+      %td
+        = player['amount_of_work']
+      %td
+        = player['unknown_risk']

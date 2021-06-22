@@ -1,0 +1,6 @@
+= simple_form_for @player, :url => player_vote_game_path, :remote => true do |f|
+  = f.input :complexity, collection: @game.complexity.lookup
+  = f.input :amount_of_work, collection: @game.amount_of_work.lookup
+  = f.input :unknown_risk, collection: @game.unknown_risk.lookup
+  = f.hidden_field :name
+  = f.submit 'vote',:class => "btn btn-primary"

@@ -1,17 +1,23 @@
 %p#notice= notice
 
+= render :partial => 'game_settings'
+
 %p
-  %b Name:
-  = @game.name
-%p
-  %b Amount of work:
-  = @game.amount_of_work
-%p
-  %b Complexity:
-  = @game.complexity
-%p
-  %b Unknown risk:
-  = @game.unknown_risk
+
+.container
+  .row
+    .col
+      #game-id{"data-game-id" => "#{@game.id}"}
+        This is game #{@game.id}
+      %p
+      %div
+        - if @player.name
+          = render :partial => 'form_vote'
+        - else
+          = render :partial => 'form_join'
+    .col#players_table
+      = render :partial => 'players_table', :locals => { :players => session[:players] }
+
 
 = link_to 'Edit', edit_game_path(@game)
 \|

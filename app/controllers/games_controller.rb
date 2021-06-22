@@ -1,5 +1,42 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: %i[ show edit update destroy ]
+  before_action :set_game, only: %i[ show edit update destroy join player_vote ]
+  before_action :set_player, only: %i[ show join player_vote ]
+  before_action :set_players_session
+
+  def update_player_vote(player)
+    # binding.pry
+    p = session[:players].find{|players| players[:name.to_s] == player.name}
+    session[:players].delete(p)
+    add_player(player)
+  end
+
+  def add_player(player)
+    # binding.pry
+    session[:players] << player.serializable_hash
+  end
+
+  def player_vote
+    # binding.pry
+    update_player_vote(@player)
+    # ActionCable.server.broadcast "game_channel_#{@game_.id}", session[:players]
+    # binding.pry
+    GameChannel.broadcast(@game.id, session[:players])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def join
+    # binding.pry
+    add_player(@player)
+    ## ActionCable.server.broadcast "game_channel_#{@game_.id}", session[:players]
+    # GameChannel.broadcast(@game.id, session[:players])
+
+    respond_to do |format|
+      format.html { redirect_to game_path(@game, { :player => { :name => @player.name } }) }
+    end
+  end
 
   # GET /games or /games.json
   def index
@@ -65,5 +102,17 @@ class GamesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def game_params
       params.require(:game).permit(:name, :amount_of_work_id, :complexity_id, :unknown_risk_id)
+    end
+
+    def set_player
+      @player = Player.new(player_params)
+    end
+
+    def player_params
+      params.fetch(:player, {}).permit(:name, :complexity, :amount_of_work, :unknown_risk)
+    end
+
+    def set_players_session
+      session[:players] ||= []
     end
 end

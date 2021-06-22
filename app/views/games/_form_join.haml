@@ -1,0 +1,5 @@
+= form_for @player, :url => join_game_path do |f|
+  .description
+    = f.label :name
+  = f.text_field :name
+  = f.submit 'join',:class => "btn btn-primary"
