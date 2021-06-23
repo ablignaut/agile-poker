@@ -1,4 +1,4 @@
-= form_for @amount_of_work do |f|
+= simple_form_for @amount_of_work, :wrapper => :horizontal_form do |f|
   - if @amount_of_work.errors.any?
     #error_explanation
       %h2= "#{pluralize(@amount_of_work.errors.count, "error")} prohibited this amount_of_work from being saved:"
@@ -7,19 +7,14 @@
           %li= message
 
   .field
-    = f.label :tiny
-    = f.text_field :tiny
+    = f.input :tiny
   .field
-    = f.label :little
-    = f.text_field :little
+    = f.input :little
   .field
-    = f.label :fair
-    = f.text_field :fair
+    = f.input :fair
   .field
-    = f.label :large
-    = f.text_field :large
+    = f.input :large
   .field
-    = f.label :huge
-    = f.text_field :huge
+    = f.input :huge
   .actions
     = f.submit 'Save'

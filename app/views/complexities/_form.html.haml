@@ -1,4 +1,4 @@
-= form_for @complexity do |f|
+= simple_form_for @complexity, :wrapper => :horizontal_form do |f|
   - if @complexity.errors.any?
     #error_explanation
       %h2= "#{pluralize(@complexity.errors.count, "error")} prohibited this complexity from being saved:"
@@ -7,19 +7,14 @@
           %li= message
 
   .field
-    = f.label :none
-    = f.text_field :none
+    = f.input :none
   .field
-    = f.label :little
-    = f.text_field :little
+    = f.input :little
   .field
-    = f.label :fair
-    = f.text_field :fair
+    = f.input :fair
   .field
-    = f.label :complex
-    = f.text_field :complex
+    = f.input :complex
   .field
-    = f.label :very_complex
-    = f.text_field :very_complex
+    = f.input :very_complex
   .actions
     = f.submit 'Save'
