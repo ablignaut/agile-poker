@@ -16,7 +16,7 @@
         - else
           = render :partial => 'form_join'
     .col#players_table
-      = render :partial => 'players_table', :locals => { :players => session[:players] }
+      = render :partial => 'players_table', :locals => { :players => session["players_#{@game.id}"] }
 
 
 = link_to 'Edit', edit_game_path(@game)

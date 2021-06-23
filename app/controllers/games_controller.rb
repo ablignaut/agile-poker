@@ -1,26 +1,26 @@
 class GamesController < ApplicationController
   before_action :set_game, only: %i[ show edit update destroy join player_vote ]
   before_action :set_player, only: %i[ show join player_vote ]
-  before_action :set_players_session
+  before_action :set_players_session, only: %i[ show join player_vote ]
 
   def update_player_vote(player)
     # binding.pry
-    p = session[:players].find{|players| players[:name.to_s] == player.name}
-    session[:players].delete(p)
+    p = session["players_#{@game.id}"].find{|players| players[:name.to_s] == player.name}
+    session["players_#{@game.id}"].delete(p)
     add_player(player)
   end
 
   def add_player(player)
     # binding.pry
-    session[:players] << player.serializable_hash
+    session["players_#{@game.id}"] << player.serializable_hash
   end
 
   def player_vote
     # binding.pry
     update_player_vote(@player)
-    # ActionCable.server.broadcast "game_channel_#{@game_.id}", session[:players]
+    # ActionCable.server.broadcast "game_channel_#{@game_.id}", session["players_#{@game.id}"]
     # binding.pry
-    GameChannel.broadcast(@game.id, session[:players])
+    GameChannel.broadcast(@game.id, session["players_#{@game.id}"])
 
     respond_to do |format|
       format.js
@@ -30,8 +30,8 @@ class GamesController < ApplicationController
   def join
     # binding.pry
     add_player(@player)
-    ## ActionCable.server.broadcast "game_channel_#{@game_.id}", session[:players]
-    # GameChannel.broadcast(@game.id, session[:players])
+    ## ActionCable.server.broadcast "game_channel_#{@game_.id}", session["players_#{@game.id}"]
+    # GameChannel.broadcast(@game.id, session["players_#{@game.id}"])
 
     respond_to do |format|
       format.html { redirect_to game_path(@game, { :player => { :name => @player.name } }) }
@@ -113,6 +113,6 @@ class GamesController < ApplicationController
     end
 
     def set_players_session
-      session[:players] ||= []
+      session["players_#{@game.id}"] ||= []
     end
 end
