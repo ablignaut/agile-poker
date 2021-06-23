@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2021_06_21_152054) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "amount_of_works", force: :cascade do |t|
     t.decimal "tiny"
     t.decimal "little"
@@ -34,9 +37,9 @@ ActiveRecord::Schema.define(version: 2021_06_21_152054) do
 
   create_table "games", force: :cascade do |t|
     t.string "name"
-    t.integer "amount_of_work_id", null: false
-    t.integer "complexity_id", null: false
-    t.integer "unknown_risk_id", null: false
+    t.bigint "amount_of_work_id", null: false
+    t.bigint "complexity_id", null: false
+    t.bigint "unknown_risk_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["amount_of_work_id"], name: "index_games_on_amount_of_work_id"

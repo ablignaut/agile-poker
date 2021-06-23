@@ -124,6 +124,7 @@ GEM
     nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
+    pg (1.2.3)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -204,7 +205,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.2)
     temple (0.8.2)
     thor (1.1.0)
     tilt (2.0.10)
@@ -245,6 +245,7 @@ DEPENDENCIES
   haml-rails (~> 2.0.1)
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  pg
   pry-byebug
   pry-rails (~> 0.3.9)
   puma (~> 5.0)
@@ -255,7 +256,6 @@ DEPENDENCIES
   selenium-webdriver
   simple_form
   spring
-  sqlite3 (~> 1.4)
   turbolinks (~> 5)
   web-console (>= 4.1.0)
   webdrivers
