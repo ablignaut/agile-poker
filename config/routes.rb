@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :games do
     member do
       post :player_vote
+      post :clear_votes
       post :join
     end
   end

@@ -1,7 +1,7 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: %i[ show edit update destroy join player_vote ]
-  before_action :set_player, only: %i[ show join player_vote ]
-  before_action :set_players_session, only: %i[ show join player_vote ]
+  before_action :set_game, only: %i[ show edit update destroy join player_vote clear_votes ]
+  before_action :set_player, only: %i[ show join player_vote clear_votes ]
+  before_action :set_players_session, only: %i[ show join player_vote clear_votes ]
 
   def update_player_vote(player)
     # binding.pry
@@ -27,6 +27,15 @@ class GamesController < ApplicationController
     end
   end
 
+  def clear_votes
+    session["players_#{@game.id}"] = []
+    GameChannel.broadcast(@game.id, session["players_#{@game.id}"])
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def join
     # binding.pry
     add_player(@player)
@@ -34,7 +43,7 @@ class GamesController < ApplicationController
     # GameChannel.broadcast(@game.id, session["players_#{@game.id}"])
 
     respond_to do |format|
-      format.html { redirect_to game_path(@game, { :player => { :name => @player.name } }) }
+      format.html { redirect_to game_path(@game, { :player => { :name => @player.name } }), notice: "You have joined the game" }
     end
   end
 

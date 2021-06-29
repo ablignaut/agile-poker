@@ -4,3 +4,6 @@
   = f.input :unknown_risk, collection: @game.unknown_risk.lookup
   = f.hidden_field :name
   = f.submit 'vote',:class => "btn btn-primary"
+%p
+  = simple_form_for @player, :url => clear_votes_game_path, :remote => true do |f|
+    = f.submit 'clear votes',:class => "btn btn-secondary"
