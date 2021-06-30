@@ -1,9 +1,15 @@
-= simple_form_for @player, :url => player_vote_game_path, :remote => true, :wrapper => :horizontal_form do |f|
+%h6
+  #{@games_player.name}
+= simple_form_for @games_player, :url => player_vote_game_path(@game), :method => :post, :remote => true, :wrapper => :horizontal_form do |f|
   = f.input :complexity, collection: @game.complexity.lookup
   = f.input :amount_of_work, collection: @game.amount_of_work.lookup
   = f.input :unknown_risk, collection: @game.unknown_risk.lookup
   = f.hidden_field :name
   = f.submit 'vote',:class => "btn btn-primary"
 %p
-  = simple_form_for @player, :url => clear_votes_game_path, :remote => true do |f|
+  = simple_form_for @games_player, :url => clear_votes_game_path(@game), :method => :post, :remote => true do |f|
     = f.submit 'clear votes',:class => "btn btn-secondary"
+
+%p
+  = simple_form_for @games_player, :url => show_votes_game_path(@game), :method => :post, :remote => true do |f|
+    = f.submit 'show votes',:class => "btn btn-secondary"

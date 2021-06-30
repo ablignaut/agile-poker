@@ -4,8 +4,11 @@ Rails.application.routes.draw do
     member do
       post :player_vote
       post :clear_votes
+      post :show_votes
       post :join
     end
+
+    resources :games_players
   end
   resources :unknown_risks
   resources :complexities

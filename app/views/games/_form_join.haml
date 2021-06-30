@@ -1,4 +1,4 @@
-= simple_form_for @player, :url => join_game_path, :wrapper => :horizontal_form do |f|
+= simple_form_for @games_player, :url => join_game_path(@game), :method => :post, :wrapper => :horizontal_form do |f|
   .description
     = f.label :name
   = f.text_field :name

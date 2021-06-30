@@ -7,14 +7,18 @@ class GameChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def self.broadcast(id, data)
-    ActionCable.server.broadcast "game_channel_#{id}", html(data)
+  def self.broadcast(id, games_players)
+    ActionCable.server.broadcast "game_channel_#{id}", html(games_players, games_players.players_not_voted?)
   end
 
-  def self.html(players)
+  def self.broadcast_show_votes(id, games_players)
+    ActionCable.server.broadcast "game_channel_#{id}", html(games_players, false)
+  end
+
+  def self.html(players, hide_player_votes)
     ApplicationController.render(
       partial: 'games/players_table',
-      locals: { players: players }
+      locals: { players: players, :hide_player_votes => hide_player_votes }
     )
   end
 end

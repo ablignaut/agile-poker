@@ -1,4 +1,4 @@
-%table
+%table.table
   %tr
     %th{:colspan => 4}
       Player Votes
@@ -11,13 +11,21 @@
       Amount of Work
     %th{:align => :left}
       Unknowns / Risks
+    %th{:align => :left}
+      voted?
+    %th{:align => :left}
+      Remove
   - players.each do |player|
     %tr
       %td
-        = player['name']
+        = player.name
       %td
-        = player['complexity']
+        = hide_player_votes ? 'x' : player.complexity
       %td
-        = player['amount_of_work']
+        = hide_player_votes ? 'x' : player.amount_of_work
       %td
-        = player['unknown_risk']
+        = hide_player_votes ? 'x' : player.unknown_risk
+      %td
+        = player.voted? ? 'Yes' : 'No'
+      %td
+        = link_to 'Remove', [player.game, player], method: :delete, :remote => true, data: { confirm: 'Are you sure?' }

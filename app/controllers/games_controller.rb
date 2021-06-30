@@ -1,26 +1,9 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: %i[ show edit update destroy join player_vote clear_votes ]
-  before_action :set_player, only: %i[ show join player_vote clear_votes ]
-  before_action :set_players_session, only: %i[ show join player_vote clear_votes ]
-
-  def update_player_vote(player)
-    # binding.pry
-    p = session["players_#{@game.id}"].find{|players| players[:name.to_s] == player.name}
-    session["players_#{@game.id}"].delete(p)
-    add_player(player)
-  end
-
-  def add_player(player)
-    # binding.pry
-    session["players_#{@game.id}"] << player.serializable_hash
-  end
+  before_action :set_game, only: %i[ show edit update destroy join player_vote clear_votes show_votes ]
+  before_action :set_player, only: %i[ show join player_vote ]
 
   def player_vote
-    # binding.pry
-    update_player_vote(@player)
-    # ActionCable.server.broadcast "game_channel_#{@game_.id}", session["players_#{@game.id}"]
-    # binding.pry
-    GameChannel.broadcast(@game.id, session["players_#{@game.id}"])
+    GameChannel.broadcast(@game.id, @game.games_players)
 
     respond_to do |format|
       format.js
@@ -28,8 +11,17 @@ class GamesController < ApplicationController
   end
 
   def clear_votes
-    session["players_#{@game.id}"] = []
-    GameChannel.broadcast(@game.id, session["players_#{@game.id}"])
+    @game.games_players.update_all(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil)
+    GameChannel.broadcast(@game.id, @game.games_players)
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def show_votes
+    # binding.pry
+    GameChannel.broadcast_show_votes(@game.id, @game.games_players)
 
     respond_to do |format|
       format.js
@@ -37,13 +29,9 @@ class GamesController < ApplicationController
   end
 
   def join
-    # binding.pry
-    add_player(@player)
-    ## ActionCable.server.broadcast "game_channel_#{@game_.id}", session["players_#{@game.id}"]
-    # GameChannel.broadcast(@game.id, session["players_#{@game.id}"])
-
+    GameChannel.broadcast(@game.id, @game.games_players)
     respond_to do |format|
-      format.html { redirect_to game_path(@game, { :player => { :name => @player.name } }), notice: "You have joined the game" }
+      format.html { redirect_to game_path(@game, { :games_player => { :name => @games_player.name } }), notice: "You have joined the game" }
     end
   end
 
@@ -114,14 +102,21 @@ class GamesController < ApplicationController
     end
 
     def set_player
-      @player = Player.new(player_params)
+      # why is this not working?
+      # @games_player = @game.games_players.create_with(player_params).find_or_create_by!(:name => player_params[:name])
+      # binding.pry
+      if player_params[:name]
+        @games_player = @game.games_players.find_or_create_by(:name => player_params[:name])
+        @games_player.complexity = player_params[:complexity]
+        @games_player.amount_of_work = player_params[:amount_of_work]
+        @games_player.unknown_risk = player_params[:unknown_risk]
+        @games_player.save!
+      else
+        @games_player = @game.games_players.new
+      end
     end
 
     def player_params
-      params.fetch(:player, {}).permit(:name, :complexity, :amount_of_work, :unknown_risk)
-    end
-
-    def set_players_session
-      session["players_#{@game.id}"] ||= []
+      params.fetch(:games_player, {}).permit(:name, :complexity, :amount_of_work, :unknown_risk)
     end
 end

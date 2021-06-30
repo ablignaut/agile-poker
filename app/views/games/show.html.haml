@@ -11,12 +11,12 @@
         This is game #{@game.id}
       %p
       %div
-        - if @player.name
+        - if @games_player.name
           = render :partial => 'form_vote'
         - else
           = render :partial => 'form_join'
     .col#players_table
-      = render :partial => 'players_table', :locals => { :players => session["players_#{@game.id}"] }
+      = render :partial => 'players_table', :locals => { :players => @game.games_players, :hide_player_votes => @game.games_players.players_not_voted? }
 
 
 = link_to 'Edit', edit_game_path(@game)
