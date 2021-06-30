@@ -12,7 +12,7 @@
     - @games.each do |game|
       %tr
         %td= game.name
-        %td= link_to 'Join', new_game_games_player_path(game)
+        %td= link_to 'Join', game_path(game)
         %td= link_to 'Edit', edit_game_path(game)
         %td= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' }
 

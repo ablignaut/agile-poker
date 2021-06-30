@@ -12,6 +12,10 @@
     %th{:align => :left}
       Unknowns / Risks
     %th{:align => :left}
+      Total Points
+    %th{:align => :left}
+      Fibonacci Vote
+    %th{:align => :left}
       voted?
     %th{:align => :left}
       Remove
@@ -26,6 +30,51 @@
       %td
         = hide_player_votes ? 'x' : player.unknown_risk
       %td
+        = hide_player_votes ? 'x' : player.total_points
+      %td
+        = hide_player_votes ? 'x' : player.fibonacci_vote
+      %td
         = player.voted? ? 'Yes' : 'No'
       %td
         = link_to 'Remove', [player.game, player], method: :delete, :remote => true, data: { confirm: 'Are you sure?' }
+  - unless hide_player_votes
+    %tr
+      %td
+        Average
+      %td
+        #{as_average(players.sum(:complexity), players.count)}
+      %td
+        #{as_average(players.sum(:amount_of_work), players.count)}
+      %td
+        #{as_average(players.sum(:unknown_risk), players.count)}
+      %td
+        #{as_average(players.sum_total_points, players.count)}
+      %td
+      %td
+
+- unless hide_player_votes
+  %table.table
+    %tr
+      %th{:colspan => 4}
+        Summary
+    %tr
+      %th{:align => :left}
+        Metric
+      %th{:align => :left}
+        Player
+      %th{:align => :left}
+        Points Total
+    %tr
+      %td
+        Highest
+      %td
+        #{format_number(players.highest_voter.name)}
+      %td
+        #{format_number(players.highest_voter.total_points)}
+    %tr
+      %td
+        Lowest
+      %td
+        #{format_number(players.lowest_voter.name)}
+      %td
+        #{format_number(players.lowest_voter.total_points)}
