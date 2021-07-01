@@ -37,7 +37,7 @@
         = player.voted? ? 'Yes' : 'No'
       %td
         = link_to 'Remove', [player.game, player], method: :delete, :remote => true, data: { confirm: 'Are you sure?' }
-  - unless show_player_votes
+  - if show_player_votes
     %tr
       %td
         Average
