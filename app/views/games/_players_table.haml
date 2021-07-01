@@ -64,17 +64,23 @@
         Player
       %th{:align => :left}
         Points Total
+      %th{:align => :left}
+        Fibonacci Vote
     %tr
       %td
         Highest
       %td
-        #{format_number(players.highest_voter.name)}
+        #{players.highest_voter.name}
       %td
         #{format_number(players.highest_voter.total_points)}
+      %td
+        #{format_number(players.highest_voter.fibonacci_vote)}
     %tr
       %td
         Lowest
       %td
-        #{format_number(players.lowest_voter.name)}
+        #{players.lowest_voter.name}
       %td
         #{format_number(players.lowest_voter.total_points)}
+      %td
+        #{format_number(players.lowest_voter.fibonacci_vote)}

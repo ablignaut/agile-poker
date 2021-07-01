@@ -36,6 +36,6 @@ class GamesPlayer < ApplicationRecord
   end
 
   def self.total_points_ascending
-    @total_points_ascending ||= all.sort_by(&:total_points)
+    all.sort_by(&:total_points)
   end
 end
