@@ -23,6 +23,10 @@ class GamesPlayer < ApplicationRecord
     @total_points ||= all.reject{|x| x.total_points.nil?}.sum(&:total_points)
   end
 
+  def self.sum_fibonacci_vote
+    @total_points ||= all.reject{|x| x.fibonacci_vote.nil?}.sum(&:fibonacci_vote)
+  end
+
   def total_points
     @total_points ||= [complexity, amount_of_work, unknown_risk].compact.sum
   end
