@@ -4,6 +4,7 @@ class GamesPlayer < ApplicationRecord
   belongs_to :game
 
   scope :players_not_voted, -> { where(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil) }
+  scope :players_voted, -> { where.not(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil) }
 
   def self.players_not_voted?
     players_not_voted.present?
@@ -20,11 +21,11 @@ class GamesPlayer < ApplicationRecord
   end
 
   def self.sum_total_points
-    @total_points ||= all.reject{|x| x.total_points.nil?}.sum(&:total_points)
+    @total_points ||= players_voted.reject{|x| x.total_points.nil?}.sum(&:total_points)
   end
 
   def self.sum_fibonacci_vote
-    @total_points ||= all.reject{|x| x.fibonacci_vote.nil?}.sum(&:fibonacci_vote)
+    @total_points ||= players_voted.reject{|x| x.fibonacci_vote.nil?}.sum(&:fibonacci_vote)
   end
 
   def total_points
@@ -46,6 +47,6 @@ class GamesPlayer < ApplicationRecord
   end
 
   def self.total_points_ascending
-    all.sort_by(&:total_points)
+    players_voted.sort_by(&:total_points)
   end
 end
