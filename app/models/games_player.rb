@@ -9,6 +9,12 @@ class GamesPlayer < ApplicationRecord
     players_not_voted.present?
   end
 
+  def self.players_all_voted?
+    return false if all.blank?
+
+    !players_not_voted?
+  end
+
   def voted?
     complexity && amount_of_work && unknown_risk
   end

@@ -8,17 +8,17 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def self.broadcast(id, games_players)
-    ActionCable.server.broadcast "game_channel_#{id}", html(games_players, games_players.players_not_voted?)
+    ActionCable.server.broadcast "game_channel_#{id}", html(games_players, games_players.players_all_voted?)
   end
 
   def self.broadcast_show_votes(id, games_players)
-    ActionCable.server.broadcast "game_channel_#{id}", html(games_players, false)
+    ActionCable.server.broadcast "game_channel_#{id}", html(games_players, true)
   end
 
-  def self.html(players, hide_player_votes)
+  def self.html(players, show_player_votes)
     ApplicationController.render(
       partial: 'games/players_table',
-      locals: { players: players, :hide_player_votes => hide_player_votes }
+      locals: { players: players, :show_player_votes => show_player_votes }
     )
   end
 end

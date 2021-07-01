@@ -16,7 +16,7 @@
         - else
           = render :partial => 'form_join'
     .col#players_table
-      = render :partial => 'players_table', :locals => { :players => @game.games_players.order(:id), :hide_player_votes => @game.games_players.players_not_voted? }
+      = render :partial => 'players_table', :locals => { :players => @game.games_players.order(:id), :show_player_votes => @game.games_players.players_all_voted? }
 
 
 = link_to 'Edit', edit_game_path(@game)

@@ -24,20 +24,20 @@
       %td
         = player.name
       %td
-        = hide_player_votes ? 'x' : player.complexity
+        = show_player_votes ? player.complexity : 'x'
       %td
-        = hide_player_votes ? 'x' : player.amount_of_work
+        = show_player_votes ? player.amount_of_work : 'x'
       %td
-        = hide_player_votes ? 'x' : player.unknown_risk
+        = show_player_votes ? player.unknown_risk : 'x'
       %td
-        = hide_player_votes ? 'x' : player.total_points
+        = show_player_votes ? player.total_points : 'x'
       %td
-        = hide_player_votes ? 'x' : player.fibonacci_vote
+        = show_player_votes ? player.fibonacci_vote : 'x'
       %td
         = player.voted? ? 'Yes' : 'No'
       %td
         = link_to 'Remove', [player.game, player], method: :delete, :remote => true, data: { confirm: 'Are you sure?' }
-  - unless hide_player_votes
+  - unless show_player_votes
     %tr
       %td
         Average
@@ -52,7 +52,7 @@
       %td
       %td
 
-- unless hide_player_votes
+- if show_player_votes
   %table.table
     %tr
       %th{:colspan => 4}
