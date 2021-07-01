@@ -42,15 +42,15 @@
       %td
         Average
       %td
-        #{as_average(players.sum(:complexity), players.count)}
+        #{as_average(players.sum(:complexity), players.players_voted.count)}
       %td
-        #{as_average(players.sum(:amount_of_work), players.count)}
+        #{as_average(players.sum(:amount_of_work), players.players_voted.count)}
       %td
-        #{as_average(players.sum(:unknown_risk), players.count)}
+        #{as_average(players.sum(:unknown_risk), players.players_voted.count)}
       %td
-        #{as_average(players.sum_total_points, players.count)}
+        #{as_average(players.sum_total_points, players.players_voted.count)}
       %td.table-primary
-        #{as_average(players.sum_fibonacci_vote, players.count)}
+        #{as_average(players.sum_fibonacci_vote, players.players_voted.count)}
       %td
 
 - if show_player_votes
@@ -72,16 +72,16 @@
         Highest
       %td
         #{players.highest_voter.name}
-      %td.table-danger
+      %td
         #{format_number(players.highest_voter.total_points)}
-      %td.table-primary
+      %td.table-danger
         #{format_number(players.highest_voter.fibonacci_vote)}
     %tr
       %td
         Lowest
       %td
         #{players.lowest_voter.name}
-      %td.table-success
+      %td
         #{format_number(players.lowest_voter.total_points)}
-      %td.table-primary
+      %td.table-success
         #{format_number(players.lowest_voter.fibonacci_vote)}
