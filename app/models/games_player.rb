@@ -21,11 +21,11 @@ class GamesPlayer < ApplicationRecord
   end
 
   def self.sum_total_points
-    @total_points ||= players_voted.reject{|x| x.total_points.nil?}.sum(&:total_points)
+    players_voted.reject{|x| x.total_points.nil?}.sum(&:total_points)
   end
 
   def self.sum_fibonacci_vote
-    @total_points ||= players_voted.reject{|x| x.fibonacci_vote.nil?}.sum(&:fibonacci_vote)
+    players_voted.reject{|x| x.fibonacci_vote.nil?}.sum(&:fibonacci_vote)
   end
 
   def total_points
