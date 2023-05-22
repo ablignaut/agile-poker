@@ -4,6 +4,7 @@ document.addEventListener('turbolinks:load', () => {
   const element = document.getElementById('game-id');
   const game_id = element.getAttribute('data-game-id');
   console.log(game_id);
+  console.log(game_id);
 
   consumer.subscriptions.create({channel: "GameChannel", game_id: game_id}, {
     connected() {
