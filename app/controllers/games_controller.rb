@@ -6,6 +6,7 @@ class GamesController < ApplicationController
     GameChannel.broadcast(@game.id, @game.games_players)
 
     respond_to do |format|
+      format.turbo_stream
       format.js
     end
   end
@@ -15,6 +16,7 @@ class GamesController < ApplicationController
     GameChannel.broadcast(@game.id, @game.games_players)
 
     respond_to do |format|
+      format.turbo_stream
       format.js
     end
   end
@@ -24,6 +26,7 @@ class GamesController < ApplicationController
     GameChannel.broadcast_show_votes(@game.id, @game.games_players)
 
     respond_to do |format|
+      format.turbo_stream
       format.js
     end
   end

@@ -1,0 +1,3 @@
+<%= turbo_stream.update "players_table" do %>
+  <%= render partial: "players_table", locals: { players: @game.games_players.order(:id), show_player_votes: @game.games_players.players_all_voted? } %>
+<% end %>

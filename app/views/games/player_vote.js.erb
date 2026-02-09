@@ -1,1 +1,2 @@
-//alert('here');
+// Update the players table for the current player
+document.getElementById('players_table').innerHTML = '<%= j render(partial: "players_table", locals: { players: @game.games_players.order(:id), show_player_votes: @game.games_players.players_all_voted? }) %>';
