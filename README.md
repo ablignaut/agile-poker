@@ -10,8 +10,11 @@ It's not very pretty and I knocked this out as quickly as possible but it does w
 
 Nothing special, it's a stock standard rails application.
 1. Clone the git repository
-2. run rails db:create db:migrate
-3. run rails s
+2. Install dependencies:
+   - `bundle install` (Ruby gems)
+   - `npm install` (JavaScript dependencies including Bootstrap)
+3. Set up the database: `rails db:create db:migrate`
+4. Start the application: `bin/dev` (runs both Rails server and JavaScript build watcher)
 
 **Using the application**
 

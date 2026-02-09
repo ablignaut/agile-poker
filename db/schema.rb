@@ -10,61 +10,60 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_29_074218) do
-
+ActiveRecord::Schema[8.1].define(version: 2021_06_29_074218) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "amount_of_works", force: :cascade do |t|
-    t.decimal "tiny"
-    t.decimal "little"
+    t.datetime "created_at", null: false
     t.decimal "fair"
-    t.decimal "large"
     t.decimal "huge"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.decimal "large"
+    t.decimal "little"
+    t.decimal "tiny"
+    t.datetime "updated_at", null: false
   end
 
   create_table "complexities", force: :cascade do |t|
-    t.decimal "none"
-    t.decimal "little"
-    t.decimal "fair"
     t.decimal "complex"
+    t.datetime "created_at", null: false
+    t.decimal "fair"
+    t.decimal "little"
+    t.decimal "none"
+    t.datetime "updated_at", null: false
     t.decimal "very_complex"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "games", force: :cascade do |t|
-    t.string "name"
     t.bigint "amount_of_work_id", null: false
     t.bigint "complexity_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name"
     t.bigint "unknown_risk_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "updated_at", null: false
     t.index ["amount_of_work_id"], name: "index_games_on_amount_of_work_id"
     t.index ["complexity_id"], name: "index_games_on_complexity_id"
     t.index ["unknown_risk_id"], name: "index_games_on_unknown_risk_id"
   end
 
   create_table "games_players", force: :cascade do |t|
-    t.string "name"
-    t.bigint "game_id", null: false
-    t.decimal "complexity"
     t.decimal "amount_of_work"
+    t.decimal "complexity"
+    t.datetime "created_at", null: false
+    t.bigint "game_id", null: false
+    t.string "name"
     t.decimal "unknown_risk"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_games_players_on_game_id"
   end
 
   create_table "unknown_risks", force: :cascade do |t|
-    t.decimal "none"
+    t.datetime "created_at", null: false
     t.decimal "low"
-    t.decimal "some"
     t.decimal "many"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.decimal "none"
+    t.decimal "some"
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "games", "amount_of_works"
