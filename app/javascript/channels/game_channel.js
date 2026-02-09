@@ -1,6 +1,6 @@
 import consumer from "./consumer"
 
-document.addEventListener('turbolinks:load', () => {
+document.addEventListener('turbo:load', () => {
   const element = document.getElementById('game-id');
   const game_id = element.getAttribute('data-game-id');
   console.log(game_id);

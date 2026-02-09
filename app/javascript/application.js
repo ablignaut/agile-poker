@@ -1,11 +1,10 @@
-import Rails from "@rails/ujs"
-import Turbolinks from "turbolinks"
+import "@hotwired/turbo-rails"
 import * as ActiveStorage from "@rails/activestorage"
 import * as bootstrap from "bootstrap"
 import "./channels/consumer"
 import "./channels/game_channel"
 
-document.addEventListener('turbolinks:load', () => {
+document.addEventListener('turbo:load', () => {
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
@@ -17,6 +16,4 @@ document.addEventListener('turbolinks:load', () => {
   })
 })
 
-Rails.start()
-Turbolinks.start()
 ActiveStorage.start()
