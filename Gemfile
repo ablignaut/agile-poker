@@ -7,7 +7,7 @@ ruby '3.3.7'
 gem 'rails', '~> 8.0.4'
 gem 'pg', '~> 1.5'
 # Use Puma as the app server
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 6.4'
 # Modern asset pipeline for Rails 8
 gem 'propshaft'
 gem 'importmap-rails'
@@ -27,14 +27,12 @@ gem 'jbuilder', '~> 2.13'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.16.0', require: false
 
-gem 'redis'
-gem 'haml'
-gem 'simple_form'
+gem 'redis', '~> 5.3'
+gem 'haml', '~> 6.3'
+gem 'simple_form', '~> 5.3'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  # gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'haml-rails', '~> 2.0.1'
+  gem 'haml-rails', '~> 2.1'
 end
 
 group :development do
@@ -43,9 +41,6 @@ group :development do
   # Display performance information such as SQL time and flame graphs for each request in your browser.
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem 'rack-mini-profiler', '~> 2.0'
-  gem 'listen', '~> 3.3'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
 
   gem 'pry-rails'
   gem 'pry-byebug'
@@ -54,10 +49,8 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 3.26'
-  gem 'selenium-webdriver'
-  # Easy installation and use of web drivers to run system tests with browsers
-  gem 'webdrivers'
+  gem 'capybara', '>= 3.40'
+  gem 'selenium-webdriver', '~> 4.27'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
