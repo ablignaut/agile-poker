@@ -1,0 +1,12 @@
+// Entry point for your Sass build
+
+// Bootstrap framework
+@import "bootstrap/scss/bootstrap";
+
+// Application-specific styles
+@import "scaffolds";
+@import "games";
+@import "complexities";
+@import "amount_of_works";
+@import "unknown_risks";
+@import "main";
