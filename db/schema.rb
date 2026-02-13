@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2021_06_29_074218) do
-
+ActiveRecord::Schema[8.0].define(version: 2026_02_13_142907) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "amount_of_works", force: :cascade do |t|
     t.decimal "tiny"
@@ -21,8 +20,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_06_29_074218) do
     t.decimal "fair"
     t.decimal "large"
     t.decimal "huge"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "complexities", force: :cascade do |t|
@@ -31,8 +30,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_06_29_074218) do
     t.decimal "fair"
     t.decimal "complex"
     t.decimal "very_complex"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "games", force: :cascade do |t|
@@ -40,8 +39,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_06_29_074218) do
     t.bigint "amount_of_work_id", null: false
     t.bigint "complexity_id", null: false
     t.bigint "unknown_risk_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["amount_of_work_id"], name: "index_games_on_amount_of_work_id"
     t.index ["complexity_id"], name: "index_games_on_complexity_id"
     t.index ["unknown_risk_id"], name: "index_games_on_unknown_risk_id"
@@ -53,8 +52,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_06_29_074218) do
     t.decimal "complexity"
     t.decimal "amount_of_work"
     t.decimal "unknown_risk"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_games_players_on_game_id"
   end
 
@@ -63,8 +62,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_06_29_074218) do
     t.decimal "low"
     t.decimal "some"
     t.decimal "many"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "games", "amount_of_works"
