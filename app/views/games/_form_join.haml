@@ -2,4 +2,7 @@
   .description
     = f.label :name
   = f.text_field :name
+  .form-check.my-2
+    = f.check_box :observer, class: "form-check-input"
+    = f.label :observer, "Join as observer", class: "form-check-label"
   = f.submit 'join',:class => "btn btn-primary"

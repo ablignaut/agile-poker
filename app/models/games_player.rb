@@ -3,17 +3,23 @@ class GamesPlayer < ApplicationRecord
   FIB_ARRAY = [0.1,0.5,1,2,3,5,8,13,20,40,100].freeze
   belongs_to :game
 
-  scope :players_not_voted, -> { where(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil) }
-  scope :players_voted, -> { where.not(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil) }
+  scope :voters,          -> { where(observer: false) }
+  scope :observers,       -> { where(observer: true) }
+  scope :players_not_voted, -> { voters.where(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil) }
+  scope :players_voted,     -> { voters.where.not(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil) }
 
   def self.players_not_voted?
     players_not_voted.present?
   end
 
   def self.players_all_voted?
-    return false if all.blank?
+    return false if voters.blank?
 
     !players_not_voted?
+  end
+
+  def observer?
+    observer
   end
 
   def voted?

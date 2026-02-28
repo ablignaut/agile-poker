@@ -3,6 +3,8 @@ class GamesController < ApplicationController
   before_action :set_player, only: %i[ show join player_vote ]
 
   def player_vote
+    return head(:forbidden) if @games_player.observer?
+
     GameChannel.broadcast(@game.id, @game.games_players)
     GameChannel.broadcast_stories(@game)
 
@@ -115,6 +117,7 @@ class GamesController < ApplicationController
         @games_player.complexity = player_params[:complexity]
         @games_player.amount_of_work = player_params[:amount_of_work]
         @games_player.unknown_risk = player_params[:unknown_risk]
+        @games_player.observer = (player_params[:observer] == '1') if player_params.key?(:observer)
         @games_player.save!
       else
         @games_player = @game.games_players.new
@@ -122,6 +125,6 @@ class GamesController < ApplicationController
     end
 
     def player_params
-      params.fetch(:games_player, {}).permit(:name, :complexity, :amount_of_work, :unknown_risk)
+      params.fetch(:games_player, {}).permit(:name, :complexity, :amount_of_work, :unknown_risk, :observer)
     end
 end

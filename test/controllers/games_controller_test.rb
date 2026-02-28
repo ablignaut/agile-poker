@@ -45,4 +45,24 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to games_url
   end
+
+  # --- observer mode ---
+
+  test "join as observer stores observer flag" do
+    post join_game_path(@game), params: { games_player: { name: "Observer Dave", observer: "1" } }
+    player = @game.games_players.find_by(name: "Observer Dave")
+    assert player.observer?
+  end
+
+  test "join as voter stores observer false" do
+    post join_game_path(@game), params: { games_player: { name: "Voter Eve", observer: "0" } }
+    player = @game.games_players.find_by(name: "Voter Eve")
+    assert_not player.observer?
+  end
+
+  test "observer cannot vote" do
+    observer = games_players(:observer_one)
+    post player_vote_game_path(@game), params: { games_player: { name: observer.name, complexity: 1, amount_of_work: 1, unknown_risk: 1 } }
+    assert_response :forbidden
+  end
 end
