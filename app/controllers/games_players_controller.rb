@@ -8,6 +8,7 @@ class GamesPlayersController < ApplicationController
     GameChannel.broadcast(@game.id, @game.games_players)
     respond_to do |format|
       format.js
+      format.turbo_stream { head :no_content }
     end
   end
 
