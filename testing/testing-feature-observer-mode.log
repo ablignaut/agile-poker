@@ -1,0 +1,86 @@
+Running 17 tests in a single process (parallelization threshold is 50)
+Run options: --seed 17091
+
+# Running:
+
+.E
+
+Error:
+GamesControllerTest#test_should_get_new:
+ActionView::Template::Error: Error: File to import not found or unreadable: bootstrap/scss/bootstrap.
+        on line 1:1 of app/assets/stylesheets/application.scss
+>> @import "bootstrap/scss/bootstrap";
+
+   ^
+
+    app/assets/stylesheets/application.scss:1
+    app/views/layouts/application.html.haml:9
+    test/controllers/games_controller_test.rb:14:in 'block in <class:GamesControllerTest>'
+
+bin/rails test test/controllers/games_controller_test.rb:13
+
+E
+
+Error:
+GamesControllerTest#test_should_get_edit:
+ActionView::Template::Error: Error: File to import not found or unreadable: bootstrap/scss/bootstrap.
+        on line 1:1 of app/assets/stylesheets/application.scss
+>> @import "bootstrap/scss/bootstrap";
+
+   ^
+
+    app/assets/stylesheets/application.scss:1
+    app/views/layouts/application.html.haml:9
+    test/controllers/games_controller_test.rb:32:in 'block in <class:GamesControllerTest>'
+
+bin/rails test test/controllers/games_controller_test.rb:31
+
+E
+
+Error:
+GamesControllerTest#test_should_get_index:
+ActionView::Template::Error: Error: File to import not found or unreadable: bootstrap/scss/bootstrap.
+        on line 1:1 of app/assets/stylesheets/application.scss
+>> @import "bootstrap/scss/bootstrap";
+
+   ^
+
+    app/assets/stylesheets/application.scss:1
+    app/views/layouts/application.html.haml:9
+    test/controllers/games_controller_test.rb:9:in 'block in <class:GamesControllerTest>'
+
+bin/rails test test/controllers/games_controller_test.rb:8
+
+.E
+
+Error:
+GamesControllerTest#test_should_destroy_game:
+ActiveRecord::InvalidForeignKey: PG::ForeignKeyViolation: ERROR:  update or delete on table "games" violates foreign key constraint "fk_rails_1f073c6bdc" on table "games_players"
+DETAIL:  Key (id)=(980190962) is still referenced from table "games_players".
+
+    app/controllers/games_controller.rb:93:in 'GamesController#destroy'
+    test/controllers/games_controller_test.rb:43:in 'block (2 levels) in <class:GamesControllerTest>'
+    test/controllers/games_controller_test.rb:42:in 'block in <class:GamesControllerTest>'
+
+bin/rails test test/controllers/games_controller_test.rb:41
+
+.E
+
+Error:
+GamesControllerTest#test_should_show_game:
+ActionView::Template::Error: Error: File to import not found or unreadable: bootstrap/scss/bootstrap.
+        on line 1:1 of app/assets/stylesheets/application.scss
+>> @import "bootstrap/scss/bootstrap";
+
+   ^
+
+    app/assets/stylesheets/application.scss:1
+    app/views/layouts/application.html.haml:9
+    test/controllers/games_controller_test.rb:27:in 'block in <class:GamesControllerTest>'
+
+bin/rails test test/controllers/games_controller_test.rb:26
+
+.........
+
+Finished in 0.398611s, 42.6480 runs/s, 35.1219 assertions/s.
+17 runs, 14 assertions, 0 failures, 5 errors, 0 skips
