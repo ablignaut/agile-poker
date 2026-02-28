@@ -84,6 +84,22 @@ class StoriesControllerTest < ActionDispatch::IntegrationTest
     assert_nil @active.estimate
   end
 
+  # --- re-vote (clear_votes) ---
+
+  test "re-vote clears all player votes and keeps the active story" do
+    @game.games_players.update_all(complexity: 3, amount_of_work: 2, unknown_risk: 1)
+
+    post clear_votes_game_path(@game), as: :turbo_stream
+
+    assert_response :success
+    @game.games_players.reload.each do |gp|
+      assert_nil gp.complexity
+      assert_nil gp.amount_of_work
+      assert_nil gp.unknown_risk
+    end
+    assert_equal "active", @active.reload.status
+  end
+
   # --- activate ---
 
   test "activate sets the story to active" do
