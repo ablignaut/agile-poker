@@ -19,6 +19,12 @@
       = render :partial => 'players_table', :locals => { :players => @game.games_players.order(:id), :show_player_votes => @game.games_players.players_all_voted? }
 
 
+.container.mt-4
+  .row
+    .col
+      #stories_panel
+        = render :partial => 'stories_panel', :locals => { game: @game, stories: @game.stories.ordered }
+
 = link_to 'Edit', edit_game_path(@game)
 \|
 = link_to 'Back', games_path

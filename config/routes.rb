@@ -9,6 +9,13 @@ Rails.application.routes.draw do
     end
 
     resources :games_players
+
+    resources :stories, only: [:create, :destroy, :update] do
+      member do
+        post :accept_estimate
+        post :activate
+      end
+    end
   end
   resources :unknown_risks
   resources :complexities
