@@ -16,11 +16,17 @@
       - if active_story.description.present?
         %p.card-text= active_story.description
       - if game.games_players.any? && game.games_players.players_all_voted?
-        = button_to "Accept Estimate",
-            accept_estimate_game_story_path(game, active_story),
-            method: :post,
-            data: { turbo_stream: true },
-            class: "btn btn-success mt-2"
+        .d-flex.align-items-center.gap-2.mt-2
+          = button_to "Accept Estimate",
+              accept_estimate_game_story_path(game, active_story),
+              method: :post,
+              data: { turbo_stream: true },
+              class: "btn btn-success btn-sm"
+          = button_to "Re-vote",
+              clear_votes_game_path(game),
+              method: :post,
+              data: { turbo_stream: true },
+              class: "btn btn-outline-secondary btn-sm"
     - else
       %p.text-muted No active story. Add stories to the queue and activate one below.
 
