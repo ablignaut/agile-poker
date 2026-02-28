@@ -1,0 +1,17 @@
+# Test Plan: Re-vote / Discussion Round (#18)
+
+## Automated Tests (StoriesController)
+
+- [PASS] re-vote clears all player votes and keeps the active story
+
+All existing stories controller tests continue to pass (11/11).
+
+## Manual Verification Required (requires browser)
+
+- When all players have voted, a "Re-vote" button appears on the current story card alongside "Accept Estimate"
+- Clicking Re-vote clears all votes in real-time for all connected players
+- The "Accept Estimate" / "Re-vote" buttons disappear after Re-vote (votes are nil)
+- Players can vote again on the same story
+- The active story does not change after clicking Re-vote
+
+## Result: PASS (11/11 tests pass)
