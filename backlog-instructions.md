@@ -24,6 +24,8 @@ Claude transitions these as work progresses. The issue lifecycle maps to:
 | `status: hold` | Skip — not ready |
 | `status: product-review` | Skip — awaiting product owner approval before implementation |
 
+**Product owner approval:** When a PO approves an issue, they change its label from `status: product-review` to `status: open`. Claude will then pick it up on the next "work the backlog" run.
+
 Issues close automatically when their PR is merged (via `Closes #N` in the PR body). No manual closure needed.
 
 ### Priority Labels
