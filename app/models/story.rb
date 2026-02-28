@@ -3,7 +3,7 @@ class Story < ApplicationRecord
 
   STATUSES = %w[pending active estimated].freeze
 
-  validates :title,    presence: true
+  validates :issue_key, presence: true
   validates :status,   inclusion: { in: STATUSES }
   validates :position, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 

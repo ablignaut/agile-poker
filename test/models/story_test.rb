@@ -6,18 +6,18 @@ class StoryTest < ActiveSupport::TestCase
   end
 
   test "valid with required fields" do
-    story = Story.new(game: @game, title: "My story", status: "pending", position: 0)
+    story = Story.new(game: @game, issue_key: "PROJ-1", status: "pending", position: 0)
     assert story.valid?
   end
 
-  test "invalid without title" do
+  test "invalid without issue_key" do
     story = Story.new(game: @game, status: "pending", position: 0)
     assert_not story.valid?
-    assert_includes story.errors[:title], "can't be blank"
+    assert_includes story.errors[:issue_key], "can't be blank"
   end
 
   test "invalid with unrecognised status" do
-    story = Story.new(game: @game, title: "X", status: "bogus", position: 0)
+    story = Story.new(game: @game, issue_key: "PROJ-1", status: "bogus", position: 0)
     assert_not story.valid?
     assert_includes story.errors[:status], "is not included in the list"
   end
