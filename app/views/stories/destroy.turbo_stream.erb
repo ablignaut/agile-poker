@@ -1,0 +1,3 @@
+<%= turbo_stream.update "stories_panel" do %>
+  <%= render partial: "games/stories_panel", locals: { game: @game, stories: @game.stories.ordered } %>
+<% end %>

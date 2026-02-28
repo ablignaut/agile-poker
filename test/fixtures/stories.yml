@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+pending_story:
+  game: one
+  issue_key: "PROJ-101"
+  description: "As a user I want to log in"
+  position: 0
+  status: "pending"
+
+active_story:
+  game: one
+  issue_key: "PROJ-102"
+  description: ""
+  position: 1
+  status: "active"
+
+estimated_story:
+  game: one
+  issue_key: "PROJ-100"
+  description: ""
+  position: 2
+  status: "estimated"
+  estimate: 5

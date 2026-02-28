@@ -1,0 +1,6 @@
+<%= turbo_stream.update "stories_panel" do %>
+  <%= render partial: "games/stories_panel", locals: { game: @game, stories: @game.stories.ordered } %>
+<% end %>
+<%= turbo_stream.update "players_table" do %>
+  <%= render partial: "games/players_table", locals: { players: @game.games_players.order(:id), show_player_votes: false } %>
+<% end %>

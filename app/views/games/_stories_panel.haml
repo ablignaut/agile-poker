@@ -1,0 +1,88 @@
+- active_story = stories.find { |s| s.status == 'active' }
+- pending_stories = stories.select { |s| s.status == 'pending' }
+- estimated_stories = stories.select { |s| s.status == 'estimated' }
+- jira_base_url = ENV['JIRA_URL'].presence
+
+.card.mb-3
+  .card-header.bg-primary.text-white
+    %strong Current Story
+  .card-body
+    - if active_story
+      %h5.card-title
+        - if jira_base_url
+          = link_to active_story.issue_key, "#{jira_base_url}/browse/#{active_story.issue_key}", target: '_blank', rel: 'noopener'
+        - else
+          = active_story.issue_key
+      - if active_story.description.present?
+        %p.card-text= active_story.description
+      - if game.games_players.any? && game.games_players.players_all_voted?
+        = button_to "Accept Estimate",
+            accept_estimate_game_story_path(game, active_story),
+            method: :post,
+            data: { turbo_stream: true },
+            class: "btn btn-success mt-2"
+    - else
+      %p.text-muted No active story. Add stories to the queue and activate one below.
+
+.card.mb-3
+  .card-header
+    %strong Story Queue
+  .card-body
+    - if pending_stories.any?
+      %ol.list-group.list-group-numbered.mb-3
+        - pending_stories.each do |story|
+          %li.list-group-item.d-flex.justify-content-between.align-items-start
+            .ms-2.me-auto
+              %strong
+                - if jira_base_url
+                  = link_to story.issue_key, "#{jira_base_url}/browse/#{story.issue_key}", target: '_blank', rel: 'noopener'
+                - else
+                  = story.issue_key
+              - if story.description.present?
+                %br
+                %small.text-muted= story.description
+            .btn-group.btn-group-sm
+              = button_to "Activate",
+                  activate_game_story_path(game, story),
+                  method: :post,
+                  data: { turbo_stream: true },
+                  class: "btn btn-outline-primary"
+              = button_to "Remove",
+                  game_story_path(game, story),
+                  method: :delete,
+                  data: { turbo_stream: true, turbo_confirm: "Remove this story?" },
+                  class: "btn btn-outline-danger"
+    - else
+      %p.text-muted.mb-3 No pending stories.
+
+    = simple_form_for [game, Story.new],
+          data: { turbo_stream: true },
+          html: { id: "new_story_form" } do |f|
+      .row.g-2.align-items-end
+        .col-md-10
+          = f.input :issue_key, label: "Issue Key", required: true, input_html: { placeholder: "e.g. PROJ-123" }
+        .col-md-2
+          = f.submit "Add Story", class: "btn btn-primary w-100"
+
+.card
+  .card-header
+    %strong Session Log
+  .card-body
+    - if estimated_stories.any?
+      %table.table.table-sm
+        %thead
+          %tr
+            %th Story
+            %th.text-end Points
+        %tbody
+          - estimated_stories.each do |story|
+            %tr
+              %td
+                - if jira_base_url
+                  = link_to story.issue_key, "#{jira_base_url}/browse/#{story.issue_key}", target: '_blank', rel: 'noopener'
+                - else
+                  = story.issue_key
+              %td.text-end
+                %strong= story.estimate
+    - else
+      %p.text-muted No stories estimated yet.
