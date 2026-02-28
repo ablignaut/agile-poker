@@ -49,15 +49,32 @@ class StoriesControllerTest < ActionDispatch::IntegrationTest
 
   # --- accept_estimate ---
 
+  test "accept_estimate stores the submitted estimate value" do
+    post accept_estimate_game_story_path(@game, @active),
+         params: { estimate: "8" },
+         as: :turbo_stream
+
+    assert_response :success
+    assert_equal 8.0, @active.reload.estimate.to_f
+  end
+
+  test "accept_estimate stores a user-overridden estimate" do
+    post accept_estimate_game_story_path(@game, @active),
+         params: { estimate: "13" },
+         as: :turbo_stream
+
+    assert_equal 13.0, @active.reload.estimate.to_f
+  end
+
   test "accept_estimate marks story as estimated and clears votes" do
     @game.games_players.update_all(complexity: 1, amount_of_work: 1, unknown_risk: 1)
 
-    post accept_estimate_game_story_path(@game, @active), as: :turbo_stream
+    post accept_estimate_game_story_path(@game, @active),
+         params: { estimate: "5" },
+         as: :turbo_stream
 
     assert_response :success
-    @active.reload
-    assert_equal "estimated", @active.status
-    assert_not_nil @active.estimate
+    assert_equal "estimated", @active.reload.status
 
     @game.games_players.reload.each do |gp|
       assert_nil gp.complexity
@@ -67,21 +84,18 @@ class StoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "accept_estimate auto-advances to the next pending story" do
-    post accept_estimate_game_story_path(@game, @active), as: :turbo_stream
+    post accept_estimate_game_story_path(@game, @active),
+         params: { estimate: "5" },
+         as: :turbo_stream
 
-    # pending_story (position 0) should now be active
     assert_equal "active", @story.reload.status
   end
 
-  test "accept_estimate with no players voted saves nil estimate" do
-    @game.games_players.update_all(complexity: nil, amount_of_work: nil, unknown_risk: nil)
-
+  test "accept_estimate with no estimate param saves nil" do
     post accept_estimate_game_story_path(@game, @active), as: :turbo_stream
 
     assert_response :success
-    @active.reload
-    assert_equal "estimated", @active.status
-    assert_nil @active.estimate
+    assert_nil @active.reload.estimate
   end
 
   # --- re-vote (clear_votes) ---

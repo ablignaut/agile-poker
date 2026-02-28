@@ -17,11 +17,9 @@
         %p.card-text= active_story.description
       - if game.games_players.any? && game.games_players.players_all_voted?
         .d-flex.align-items-center.gap-2.mt-2
-          = button_to "Accept Estimate",
-              accept_estimate_game_story_path(game, active_story),
-              method: :post,
-              data: { turbo_stream: true },
-              class: "btn btn-success btn-sm"
+          = form_with url: accept_estimate_game_story_path(game, active_story), method: :post, data: { turbo_stream: true }, class: "d-flex align-items-center gap-2" do |f|
+            = f.number_field :estimate, value: game.games_players.highest_voter&.fibonacci_vote, step: "any", min: "0", class: "form-control form-control-sm", style: "width: 90px"
+            = f.submit "Accept Estimate", class: "btn btn-success btn-sm"
           = button_to "Re-vote",
               clear_votes_game_path(game),
               method: :post,

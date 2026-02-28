@@ -45,8 +45,7 @@ class StoriesController < ApplicationController
   end
 
   def accept_estimate
-    players_voted = @game.games_players.players_voted
-    @story.update!(status: 'estimated', estimate: compute_estimate(players_voted))
+    @story.update!(status: 'estimated', estimate: params[:estimate].presence&.to_d)
 
     @game.games_players.update_all(complexity: nil, amount_of_work: nil, unknown_risk: nil)
 
@@ -91,9 +90,4 @@ class StoriesController < ApplicationController
     params.require(:story).permit(:issue_key, :description, :position)
   end
 
-  def compute_estimate(players_voted)
-    return nil if players_voted.blank?
-    avg = players_voted.sum(&:fibonacci_vote).to_d / players_voted.count
-    GamesPlayer::FIB_ARRAY.min_by { |f| (f - avg).abs }
-  end
 end
