@@ -12,7 +12,12 @@
       %p
       %div
         - if @games_player.name
-          = render :partial => 'form_vote'
+          - if @games_player.observer?
+            .alert.alert-info.mb-0
+              %strong Observing
+              — you can watch votes in real-time but cannot vote.
+          - else
+            = render :partial => 'form_vote'
         - else
           = render :partial => 'form_join'
     .col#players_table
