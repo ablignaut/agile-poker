@@ -12,18 +12,18 @@ class StoriesControllerTest < ActionDispatch::IntegrationTest
   test "create adds a story to the game" do
     assert_difference("Story.count", 1) do
       post game_stories_path(@game),
-           params: { story: { title: "New story", description: "", url: "" } },
+           params: { story: { issue_key: "PROJ-200", description: "" } },
            as: :turbo_stream
     end
     assert_response :success
-    assert_equal "New story", Story.last.title
+    assert_equal "PROJ-200", Story.last.issue_key
     assert_equal @game.id, Story.last.game_id
   end
 
-  test "create with blank title does not save" do
+  test "create with blank issue_key does not save" do
     assert_no_difference("Story.count") do
       post game_stories_path(@game),
-           params: { story: { title: "" } },
+           params: { story: { issue_key: "" } },
            as: :turbo_stream
     end
   end
@@ -39,12 +39,12 @@ class StoriesControllerTest < ActionDispatch::IntegrationTest
 
   # --- update ---
 
-  test "update changes the story title" do
+  test "update changes the story issue_key" do
     patch game_story_path(@game, @story),
-          params: { story: { title: "Updated title" } },
+          params: { story: { issue_key: "PROJ-999" } },
           as: :turbo_stream
     assert_response :success
-    assert_equal "Updated title", @story.reload.title
+    assert_equal "PROJ-999", @story.reload.issue_key
   end
 
   # --- accept_estimate ---

@@ -88,7 +88,7 @@ class StoriesController < ApplicationController
   end
 
   def story_params
-    params.require(:story).permit(:title, :description, :url, :position)
+    params.require(:story).permit(:issue_key, :description, :position)
   end
 
   def compute_estimate(players_voted)

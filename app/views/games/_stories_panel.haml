@@ -1,18 +1,20 @@
 - active_story = stories.find { |s| s.status == 'active' }
 - pending_stories = stories.select { |s| s.status == 'pending' }
 - estimated_stories = stories.select { |s| s.status == 'estimated' }
+- jira_base_url = ENV['JIRA_URL'].presence
 
 .card.mb-3
   .card-header.bg-primary.text-white
     %strong Current Story
   .card-body
     - if active_story
-      %h5.card-title= active_story.title
+      %h5.card-title
+        - if jira_base_url
+          = link_to active_story.issue_key, "#{jira_base_url}/browse/#{active_story.issue_key}", target: '_blank', rel: 'noopener'
+        - else
+          = active_story.issue_key
       - if active_story.description.present?
         %p.card-text= active_story.description
-      - if active_story.url.present?
-        %p.card-text
-          = link_to active_story.url, active_story.url, target: '_blank', rel: 'noopener'
       - if game.games_players.any? && game.games_players.players_all_voted?
         = button_to "Accept Estimate",
             accept_estimate_game_story_path(game, active_story),
@@ -31,7 +33,11 @@
         - pending_stories.each do |story|
           %li.list-group-item.d-flex.justify-content-between.align-items-start
             .ms-2.me-auto
-              %strong= story.title
+              %strong
+                - if jira_base_url
+                  = link_to story.issue_key, "#{jira_base_url}/browse/#{story.issue_key}", target: '_blank', rel: 'noopener'
+                - else
+                  = story.issue_key
               - if story.description.present?
                 %br
                 %small.text-muted= story.description
@@ -53,10 +59,8 @@
           data: { turbo_stream: true },
           html: { id: "new_story_form" } do |f|
       .row.g-2.align-items-end
-        .col-md-6
-          = f.input :title, label: "Story Title", required: true, input_html: { placeholder: "e.g. User can log in" }
-        .col-md-4
-          = f.input :url, label: "URL (optional)", required: false, input_html: { placeholder: "https://..." }
+        .col-md-10
+          = f.input :issue_key, label: "Issue Key", required: true, input_html: { placeholder: "e.g. PROJ-123" }
         .col-md-2
           = f.submit "Add Story", class: "btn btn-primary w-100"
 
@@ -74,9 +78,10 @@
           - estimated_stories.each do |story|
             %tr
               %td
-                = story.title
-                - if story.url.present?
-                  = link_to "(link)", story.url, target: '_blank', rel: 'noopener', class: 'ms-1 text-muted small'
+                - if jira_base_url
+                  = link_to story.issue_key, "#{jira_base_url}/browse/#{story.issue_key}", target: '_blank', rel: 'noopener'
+                - else
+                  = story.issue_key
               %td.text-end
                 %strong= story.estimate
     - else
