@@ -1,0 +1,31 @@
+# Test Plan: Observer Mode (#19)
+
+## Automated Tests
+
+### Model: GamesPlayer
+- [PASS] voters scope excludes observers
+- [PASS] observers scope returns only observers
+- [PASS] players_all_voted? ignores observers
+- [PASS] players_all_voted? returns false when a voter has not voted
+- [PASS] players_all_voted? returns false when there are no voters
+- [PASS] observer? returns true for an observer
+- [PASS] observer? returns false for a voter
+
+### Controller: GamesController
+- [PASS] join as observer stores observer flag
+- [PASS] join as voter stores observer false
+- [PASS] observer cannot vote (returns 403 Forbidden)
+
+Pre-existing failures (not related to this feature):
+- test_should_get_index / new / show / edit — Bootstrap SCSS not compiled in test env (pre-existing)
+- test_should_destroy_game — FK violation without dependent: :destroy (pre-existing)
+
+## Manual Verification Required (requires browser)
+
+- Observer joins via checkbox on join form — appears in Observers section of players table with badge
+- Observers see real-time vote reveals and story changes
+- Observer does NOT see voting form — sees "Observing" notice instead
+- "All players voted" / "Accept Estimate" triggers correctly when only voters have voted (observer presence ignored)
+- Removing an observer via the Remove link works
+
+## Result: PASS (10/10 new tests pass)
