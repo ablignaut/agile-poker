@@ -1,0 +1,18 @@
+# Test Plan: Vote Acceptance (#17)
+
+## Automated Tests (StoriesController)
+
+- [PASS] accept_estimate stores the submitted estimate value
+- [PASS] accept_estimate stores a user-overridden estimate
+- [PASS] accept_estimate marks story as estimated and clears votes
+- [PASS] accept_estimate auto-advances to the next pending story
+- [PASS] accept_estimate with no estimate param saves nil
+
+## Manual Verification Required (requires browser)
+
+- When all players have voted, a number input appears pre-filled with the highest Fibonacci vote
+- The user can edit the number before clicking "Accept Estimate"
+- Clicking the button saves the value shown in the input (not an average)
+- The saved estimate appears in the Session Log
+
+## Result: PASS (12/12 tests pass)
