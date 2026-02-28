@@ -1,0 +1,83 @@
+- active_story = stories.find { |s| s.status == 'active' }
+- pending_stories = stories.select { |s| s.status == 'pending' }
+- estimated_stories = stories.select { |s| s.status == 'estimated' }
+
+.card.mb-3
+  .card-header.bg-primary.text-white
+    %strong Current Story
+  .card-body
+    - if active_story
+      %h5.card-title= active_story.title
+      - if active_story.description.present?
+        %p.card-text= active_story.description
+      - if active_story.url.present?
+        %p.card-text
+          = link_to active_story.url, active_story.url, target: '_blank', rel: 'noopener'
+      - if game.games_players.any? && game.games_players.players_all_voted?
+        = button_to "Accept Estimate",
+            accept_estimate_game_story_path(game, active_story),
+            method: :post,
+            data: { turbo_stream: true },
+            class: "btn btn-success mt-2"
+    - else
+      %p.text-muted No active story. Add stories to the queue and activate one below.
+
+.card.mb-3
+  .card-header
+    %strong Story Queue
+  .card-body
+    - if pending_stories.any?
+      %ol.list-group.list-group-numbered.mb-3
+        - pending_stories.each do |story|
+          %li.list-group-item.d-flex.justify-content-between.align-items-start
+            .ms-2.me-auto
+              %strong= story.title
+              - if story.description.present?
+                %br
+                %small.text-muted= story.description
+            .btn-group.btn-group-sm
+              = button_to "Activate",
+                  activate_game_story_path(game, story),
+                  method: :post,
+                  data: { turbo_stream: true },
+                  class: "btn btn-outline-primary"
+              = button_to "Remove",
+                  game_story_path(game, story),
+                  method: :delete,
+                  data: { turbo_stream: true, turbo_confirm: "Remove this story?" },
+                  class: "btn btn-outline-danger"
+    - else
+      %p.text-muted.mb-3 No pending stories.
+
+    = simple_form_for [game, Story.new],
+          data: { turbo_stream: true },
+          html: { id: "new_story_form" } do |f|
+      .row.g-2.align-items-end
+        .col-md-6
+          = f.input :title, label: "Story Title", required: true, input_html: { placeholder: "e.g. User can log in" }
+        .col-md-4
+          = f.input :url, label: "URL (optional)", required: false, input_html: { placeholder: "https://..." }
+        .col-md-2
+          = f.submit "Add Story", class: "btn btn-primary w-100"
+
+.card
+  .card-header
+    %strong Session Log
+  .card-body
+    - if estimated_stories.any?
+      %table.table.table-sm
+        %thead
+          %tr
+            %th Story
+            %th.text-end Points
+        %tbody
+          - estimated_stories.each do |story|
+            %tr
+              %td
+                = story.title
+                - if story.url.present?
+                  = link_to "(link)", story.url, target: '_blank', rel: 'noopener', class: 'ms-1 text-muted small'
+              %td.text-end
+                %strong= story.estimate
+    - else
+      %p.text-muted No stories estimated yet.

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2021_06_29_074218) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_28_155551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,21 @@ ActiveRecord::Schema[8.1].define(version: 2021_06_29_074218) do
     t.index ["game_id"], name: "index_games_players_on_game_id"
   end
 
+  create_table "stories", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.decimal "estimate"
+    t.bigint "game_id", null: false
+    t.integer "position", default: 0, null: false
+    t.string "status", default: "pending", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.string "url"
+    t.index ["game_id", "position"], name: "index_stories_on_game_id_and_position"
+    t.index ["game_id", "status"], name: "index_stories_on_game_id_and_status"
+    t.index ["game_id"], name: "index_stories_on_game_id"
+  end
+
   create_table "unknown_risks", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.decimal "low"
@@ -70,4 +85,5 @@ ActiveRecord::Schema[8.1].define(version: 2021_06_29_074218) do
   add_foreign_key "games", "complexities"
   add_foreign_key "games", "unknown_risks"
   add_foreign_key "games_players", "games"
+  add_foreign_key "stories", "games"
 end

@@ -1,0 +1,26 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+pending_story:
+  game: one
+  title: "User can log in"
+  description: "As a user I want to log in"
+  url: ""
+  position: 0
+  status: "pending"
+
+active_story:
+  game: one
+  title: "User can register"
+  description: ""
+  url: ""
+  position: 1
+  status: "active"
+
+estimated_story:
+  game: one
+  title: "Homepage loads"
+  description: ""
+  url: ""
+  position: 2
+  status: "estimated"
+  estimate: 5

@@ -4,6 +4,7 @@ class GamesController < ApplicationController
 
   def player_vote
     GameChannel.broadcast(@game.id, @game.games_players)
+    GameChannel.broadcast_stories(@game)
 
     respond_to do |format|
       format.turbo_stream
@@ -14,6 +15,7 @@ class GamesController < ApplicationController
   def clear_votes
     @game.games_players.update_all(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil)
     GameChannel.broadcast(@game.id, @game.games_players)
+    GameChannel.broadcast_stories(@game)
 
     respond_to do |format|
       format.turbo_stream
