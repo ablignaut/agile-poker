@@ -34,6 +34,16 @@ rails s
 rails test
 ```
 
+## Testing Standards
+
+For every feature implemented (especially backlog work):
+
+- Write **controller integration tests** for all new controller actions (HTTP responses, redirects, DB changes).
+- Write **model unit tests** for any new business logic or validations.
+- Run `rails test` before marking a feature done — all tests must pass.
+- For real-time behaviour (ActionCable, Turbo Streams), write what automated tests are possible and explicitly flag anything that requires manual UI verification in the browser.
+- System tests (`rails test:system`) require chromedriver — write them where appropriate but do not block on running them in environments without a browser.
+
 ## Branch Conventions
 
 - Base branch: `master`
