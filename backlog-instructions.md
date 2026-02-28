@@ -22,6 +22,7 @@ Claude transitions these as work progresses. The issue lifecycle maps to:
 | `status: in-progress` | Active development underway |
 | `status: in-review` | PR is open, waiting for review/merge |
 | `status: hold` | Skip — not ready |
+| `status: product-review` | Skip — awaiting product owner approval before implementation |
 
 Issues close automatically when their PR is merged (via `Closes #N` in the PR body). No manual closure needed.
 
@@ -45,7 +46,7 @@ Set by the user. Claude uses these to determine pickup order.
    gh issue list --repo ablignaut/agile-poker --state open --json number,title,labels,body --limit 50
    ```
 
-2. Exclude any issue carrying one of these labels: `status: hold`, `status: planning`, `status: in-progress`, `status: in-review`.
+2. Exclude any issue carrying one of these labels: `status: hold`, `status: product-review`, `status: planning`, `status: in-progress`, `status: in-review`.
 
 3. From the remaining issues, pick using this order:
    - First: issues with `priority: high`
