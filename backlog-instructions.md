@@ -166,3 +166,5 @@ Set by the user. Claude uses these to determine pickup order.
    ```
 
 3. The issue will close automatically on merge. The `status: in-review` label remains until then.
+
+4. Return to **Finding the Next Issue** and immediately pick up the next story from the backlog.
