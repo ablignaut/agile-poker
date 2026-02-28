@@ -39,3 +39,6 @@
 yarn-debug.log*
 .yarn-integrity
 .idea
+
+# Local environment variables (use .env.example as the template)
+.env
