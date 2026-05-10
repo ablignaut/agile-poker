@@ -39,7 +39,7 @@ class JiraClientTest < ActiveSupport::TestCase
         "summary" => "Summary",
         "customfield_10100" => "Acceptance Criteria",
         "customfield_10101" => "Technical Review",
-        "customfield_10102" => "QA Notes"
+        "customfield_10102" => "QA Review"
       },
       "fields" => {
         "summary" => "Build the thing",
@@ -55,7 +55,7 @@ class JiraClientTest < ActiveSupport::TestCase
       assert_equal "Build the thing", result.summary
       assert result.acceptance_criteria_present
       refute result.technical_review_present
-      refute result.qa_notes_present
+      refute result.qa_review_present
     end
   end
 

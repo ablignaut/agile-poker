@@ -5,7 +5,11 @@
 - jira_details = active_story && JiraClient.configured? ? JiraClient.issue(active_story.issue_key) : nil
 
 .card.mb-3
-  .card-header Current Story
+  .card-header.d-flex.justify-content-between.align-items-center
+    %span Current Story
+    - if active_story && JiraClient.configured?
+      = button_to refresh_jira_game_path(game), method: :post, class: 'btn btn-sm btn-link p-0 text-body-secondary lh-1', title: 'Refresh Jira details', data: { turbo_stream: true } do
+        %span{ style: 'font-size: 1.1rem;' } ↻
   .card-body
     - if active_story
       %h5.card-title.mb-1
@@ -17,7 +21,7 @@
         %div.text-body-secondary.small.mb-2= jira_details.summary
       - if jira_details&.found?
         .d-flex.gap-3.small.mb-2
-          - { 'Acceptance Criteria' => jira_details.acceptance_criteria_present, 'Technical Review' => jira_details.technical_review_present, 'QA Notes' => jira_details.qa_notes_present }.each do |label, present|
+          - { 'Acceptance Criteria' => jira_details.acceptance_criteria_present, 'Technical Review' => jira_details.technical_review_present, 'QA Review' => jira_details.qa_review_present }.each do |label, present|
             %span
               %span{ class: (present ? 'text-success' : 'text-danger'), title: (present ? 'Set' : 'Empty') }= present ? '✓' : '✗'
               \&nbsp;

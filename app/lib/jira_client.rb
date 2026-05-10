@@ -7,7 +7,7 @@ module JiraClient
     :summary,
     :acceptance_criteria_present,
     :technical_review_present,
-    :qa_notes_present,
+    :qa_review_present,
     :found,
     keyword_init: true
   ) do
@@ -23,7 +23,7 @@ module JiraClient
   FIELD_LABELS = {
     acceptance_criteria_present: "acceptance criteria",
     technical_review_present:    "technical review",
-    qa_notes_present:            "qa notes"
+    qa_review_present:           "qa review"
   }.freeze
 
   class << self
@@ -70,7 +70,7 @@ module JiraClient
         summary: fields["summary"],
         acceptance_criteria_present: field_present_by_name?(names, fields, FIELD_LABELS[:acceptance_criteria_present]),
         technical_review_present:    field_present_by_name?(names, fields, FIELD_LABELS[:technical_review_present]),
-        qa_notes_present:            field_present_by_name?(names, fields, FIELD_LABELS[:qa_notes_present])
+        qa_review_present:           field_present_by_name?(names, fields, FIELD_LABELS[:qa_review_present])
       )
     rescue => e
       Rails.logger.warn("JiraClient.fetch_issue failed for #{issue_key}: #{e.class}: #{e.message}")

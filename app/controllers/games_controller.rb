@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: %i[ show edit update destroy join player_vote clear_votes show_votes ]
+  before_action :set_game, only: %i[ show edit update destroy join player_vote clear_votes show_votes refresh_jira ]
   before_action :set_player, only: %i[ show join player_vote ]
 
   def player_vote
@@ -42,6 +42,17 @@ class GamesController < ApplicationController
     respond_to do |format|
       format.turbo_stream
       format.js
+    end
+  end
+
+  def refresh_jira
+    active = @game.stories.active.first
+    JiraClient.refresh_issue(active.issue_key) if active
+    GameChannel.broadcast_stories(@game)
+
+    respond_to do |format|
+      format.turbo_stream { render :refresh_jira }
+      format.html { redirect_to game_path(@game) }
     end
   end
 

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       post :clear_votes
       post :show_votes
       post :join
+      post :refresh_jira
     end
 
     resources :games_players
