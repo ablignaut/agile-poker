@@ -4,11 +4,7 @@
 %script#sizing-definitions-data{ type: 'application/json' }
   != SizingDefinitions.all.to_json
 
-- sizing_categories = [
-  [:complexity,     'Complexity',      @game.complexity],
-  [:amount_of_work, 'Amount of work',  @game.amount_of_work],
-  [:unknown_risk,   'Unknowns / Risks', @game.unknown_risk]
-]
+- sizing_categories = [[:complexity, 'Complexity', @game.complexity], [:amount_of_work, 'Amount of work', @game.amount_of_work], [:unknown_risk, 'Unknowns / Risks', @game.unknown_risk]]
 
 = simple_form_for @games_player, :url => player_vote_game_path(@game), :method => :post, :remote => true, :wrapper => :horizontal_form do |f|
   - sizing_categories.each do |category, label, record|
