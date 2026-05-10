@@ -2,7 +2,7 @@
 // Sass variable overrides (must come BEFORE the Bootstrap import).
 // ---------------------------------------------------------------------------
 
-$primary:   #14b8a6;
+$primary:   #4a8e89;
 $secondary: #6b7280;
 $success:   #22c55e;
 $info:      #38bdf8;
@@ -120,7 +120,7 @@ a:hover { text-decoration: underline; }
   &:focus {
     background-color: var(--bs-tertiary-bg);
     border-color: var(--bs-primary);
-    box-shadow: 0 0 0 0.2rem rgba(20, 184, 166, 0.18);
+    box-shadow: 0 0 0 0.2rem rgba(74, 142, 137, 0.18);
     color: var(--bs-body-color);
   }
 

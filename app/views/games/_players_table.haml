@@ -26,9 +26,9 @@
             %td.text-primary= show_player_votes ? player.fibonacci_vote : '—'
             %td
               - if player.voted?
-                %span.badge.text-bg-success Yes
+                %span.badge.bg-success-subtle.text-success-emphasis Yes
               - else
-                %span.badge.text-bg-secondary No
+                %span.badge.bg-body-tertiary.text-secondary No
             %td.text-end
               = link_to 'Remove', [player.game, player], class: 'btn btn-sm btn-outline-danger', data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }
         - if show_player_votes
@@ -57,13 +57,13 @@
         %tbody
           %tr
             %td
-              %span.badge.text-bg-danger Highest
+              %span.badge.bg-danger-subtle.text-white Highest
             %td= voters.highest_voter.name
             %td= format_number(voters.highest_voter.total_points)
             %td.text-primary= format_number(voters.highest_voter.fibonacci_vote)
           %tr
             %td
-              %span.badge.text-bg-success Lowest
+              %span.badge.bg-success-subtle.text-white Lowest
             %td= voters.lowest_voter.name
             %td= format_number(voters.lowest_voter.total_points)
             %td.text-primary= format_number(voters.lowest_voter.fibonacci_vote)
