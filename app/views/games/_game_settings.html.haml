@@ -2,11 +2,3 @@
   %h1= @game.name.presence || "Game ##{@game.id}"
   .small.text-muted
     Game ##{@game.id}
-
-%dl.dl-compact
-  %dt Amount of work
-  %dd= @game.amount_of_work
-  %dt Complexity
-  %dd= @game.complexity
-  %dt Unknown / Risks
-  %dd= @game.unknown_risk
