@@ -1,9 +1,11 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: %i[ show edit update destroy join player_vote clear_votes show_votes ]
+  before_action :set_game, only: %i[ show edit update destroy join player_vote clear_votes show_votes refresh_jira ]
   before_action :set_player, only: %i[ show join player_vote ]
 
   def player_vote
     return head(:forbidden) if @games_player.observer?
+
+    refresh_active_story_from_jira_if_all_voted
 
     GameChannel.broadcast(@game.id, @game.games_players)
     GameChannel.broadcast_stories(@game)
@@ -13,6 +15,14 @@ class GamesController < ApplicationController
       format.js
     end
   end
+
+  def refresh_active_story_from_jira_if_all_voted
+    return unless @game.games_players.players_all_voted?
+    active = @game.stories.active.first
+    return unless active
+    JiraClient.refresh_issue(active.issue_key)
+  end
+  private :refresh_active_story_from_jira_if_all_voted
 
   def clear_votes
     @game.games_players.update_all(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil)
@@ -32,6 +42,17 @@ class GamesController < ApplicationController
     respond_to do |format|
       format.turbo_stream
       format.js
+    end
+  end
+
+  def refresh_jira
+    active = @game.stories.active.first
+    JiraClient.refresh_issue(active.issue_key) if active
+    GameChannel.broadcast_stories(@game)
+
+    respond_to do |format|
+      format.turbo_stream { render :refresh_jira }
+      format.html { redirect_to game_path(@game) }
     end
   end
 

@@ -45,12 +45,17 @@ class StoriesController < ApplicationController
   end
 
   def accept_estimate
+    post_jira_comment_for(@story)
+
     @story.update!(status: 'estimated', estimate: params[:estimate].presence&.to_d)
 
     @game.games_players.update_all(complexity: nil, amount_of_work: nil, unknown_risk: nil)
 
     next_story = @game.stories.pending.first
-    next_story&.update!(status: 'active')
+    if next_story
+      next_story.update!(status: 'active')
+      JiraClient.refresh_issue(next_story.issue_key)
+    end
 
     GameChannel.broadcast(@game.id, @game.games_players)
     GameChannel.broadcast_stories(@game)
@@ -67,6 +72,8 @@ class StoriesController < ApplicationController
 
     @game.games_players.update_all(complexity: nil, amount_of_work: nil, unknown_risk: nil)
 
+    JiraClient.refresh_issue(@story.issue_key)
+
     GameChannel.broadcast(@game.id, @game.games_players)
     GameChannel.broadcast_stories(@game)
 
@@ -77,6 +84,13 @@ class StoriesController < ApplicationController
   end
 
   private
+
+  def post_jira_comment_for(story)
+    return unless JiraClient.configured?
+    body = JiraCommentRenderer.render(@game)
+    JiraClient.add_comment(story.issue_key, body)
+  end
+
 
   def set_game
     @game = Game.find(params[:game_id])
