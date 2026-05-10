@@ -1,34 +1,32 @@
-%h6
-  #{@games_player.name}
+.card.mb-3
+  .card-header
+    Your Vote — #{@games_player.name}
+  .card-body
+    %script#sizing-definitions-data{ type: 'application/json' }
+      != SizingDefinitions.all.to_json
 
-%script#sizing-definitions-data{ type: 'application/json' }
-  != SizingDefinitions.all.to_json
+    - sizing_categories = [[:complexity, 'Complexity', @game.complexity], [:amount_of_work, 'Amount of work', @game.amount_of_work], [:unknown_risk, 'Unknowns / Risks', @game.unknown_risk]]
 
-- sizing_categories = [[:complexity, 'Complexity', @game.complexity], [:amount_of_work, 'Amount of work', @game.amount_of_work], [:unknown_risk, 'Unknowns / Risks', @game.unknown_risk]]
+    = simple_form_for @games_player, :url => player_vote_game_path(@game), :method => :post, :remote => true, :wrapper => :horizontal_form do |f|
+      - sizing_categories.each do |category, label, record|
+        - options = record.lookup_with_keys.map { |opt_label, value, level| [opt_label, value, { 'data-sizing-level' => level }] }
+        - selected_value = @games_player.public_send(category)
+        - selected_level = record.class::LEVELS.find { |l| record.public_send(l) == selected_value }
+        .form-group.row.mb-2{ data: { sizing_group: category } }
+          = f.label category, label, class: 'col-sm-3 col-form-label'
+          .col-sm-9
+            = f.select category, options_for_select(options, selected_value), { include_blank: true }, { class: 'form-control', data: { sizing_select: category } }
+            .sizing-description.mt-1{ data: { sizing_panel: category } }
+              - if selected_level
+                %strong= selected_level.tr('_', ' ').capitalize
+                \&nbsp;—
+                = SizingDefinitions.for(category, selected_level)
+              - else
+                %em.text-muted Pick a value to see what it means.
+      = f.hidden_field :name
+      .mt-3
+        = f.submit 'Vote', class: 'btn btn-primary btn-sm'
 
-= simple_form_for @games_player, :url => player_vote_game_path(@game), :method => :post, :remote => true, :wrapper => :horizontal_form do |f|
-  - sizing_categories.each do |category, label, record|
-    - options = record.lookup_with_keys.map { |opt_label, value, level| [opt_label, value, { 'data-sizing-level' => level }] }
-    - selected_value = @games_player.public_send(category)
-    - selected_level = record.class::LEVELS.find { |l| record.public_send(l) == selected_value }
-    .form-group.row.mb-2{ data: { sizing_group: category } }
-      = f.label category, label, class: 'col-sm-3 col-form-label'
-      .col-sm-9
-        = f.select category, options_for_select(options, selected_value), { include_blank: true }, { class: 'form-control', data: { sizing_select: category } }
-        .form-text.sizing-description.mt-1{ data: { sizing_panel: category } }
-          - if selected_level
-            %strong= selected_level.tr('_', ' ').capitalize
-            \&nbsp;—
-            = SizingDefinitions.for(category, selected_level)
-          - else
-            %em.text-muted Pick a value to see what it means.
-  = f.hidden_field :name
-  = f.submit 'vote', :class => "btn btn-primary"
-
-%p
-  = simple_form_for @games_player, :url => clear_votes_game_path(@game), :method => :post, :remote => true do |f|
-    = f.submit 'clear votes',:class => "btn btn-secondary"
-
-%p
-  = simple_form_for @games_player, :url => show_votes_game_path(@game), :method => :post, :remote => true do |f|
-    = f.submit 'show votes',:class => "btn btn-secondary"
+    .d-flex.gap-2.mt-2
+      = button_to 'Clear votes', clear_votes_game_path(@game), method: :post, class: 'btn btn-outline-secondary btn-sm'
+      = button_to 'Show votes', show_votes_game_path(@game),  method: :post, class: 'btn btn-outline-secondary btn-sm'

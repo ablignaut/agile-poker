@@ -1,35 +1,29 @@
-%p#notice= notice
+- if notice
+  .alert.alert-info.py-2.mb-3#notice= notice
+
+#game-id.d-none{ data: { game_id: @game.id } }
 
 = render :partial => 'game_settings'
 
-%p
+.row.g-3
+  .col-lg-7
+    - if @games_player.name
+      - if @games_player.observer?
+        .alert.alert-info.mb-3.py-2
+          %strong Observing
+          \— you can watch votes in real-time but cannot vote.
+      - else
+        = render :partial => 'form_vote'
+    - else
+      = render :partial => 'form_join'
+  .col-lg-5#players_table
+    = render :partial => 'players_table', :locals => { :players => @game.games_players.order(:id), :show_player_votes => @game.games_players.players_all_voted? }
 
-.container
-  .row
-    .col
-      #game-id{"data-game-id" => "#{@game.id}"}
-        This is game #{@game.id}
-      %p
-      %div
-        - if @games_player.name
-          - if @games_player.observer?
-            .alert.alert-info.mb-0
-              %strong Observing
-              — you can watch votes in real-time but cannot vote.
-          - else
-            = render :partial => 'form_vote'
-        - else
-          = render :partial => 'form_join'
-    .col#players_table
-      = render :partial => 'players_table', :locals => { :players => @game.games_players.order(:id), :show_player_votes => @game.games_players.players_all_voted? }
+.row.mt-2
+  .col
+    #stories_panel
+      = render :partial => 'stories_panel', :locals => { game: @game, stories: @game.stories.ordered }
 
-
-.container.mt-4
-  .row
-    .col
-      #stories_panel
-        = render :partial => 'stories_panel', :locals => { game: @game, stories: @game.stories.ordered }
-
-= link_to 'Edit', edit_game_path(@game)
-\|
-= link_to 'Back', games_path
+.d-flex.gap-2.mt-3
+  = link_to 'Edit', edit_game_path(@game), class: 'btn btn-sm btn-outline-secondary'
+  = link_to 'Back', games_path,           class: 'btn btn-sm btn-outline-secondary'

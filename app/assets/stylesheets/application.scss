@@ -1,6 +1,225 @@
+// ---------------------------------------------------------------------------
+// Sass variable overrides (must come BEFORE the Bootstrap import).
+// ---------------------------------------------------------------------------
+
+$primary:   #14b8a6;
+$secondary: #6b7280;
+$success:   #22c55e;
+$info:      #38bdf8;
+$warning:   #f59e0b;
+$danger:    #f43f5e;
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif;
+$font-size-base: 0.9375rem;
+$line-height-base: 1.45;
+
+$border-radius:     0.375rem;
+$border-radius-sm:  0.25rem;
+$border-radius-lg:  0.5rem;
+
+// Override Bootstrap 5.3 dark-theme palette so [data-bs-theme="dark"] picks
+// these up automatically.
+$body-bg-dark:                #1a1d21;
+$body-color-dark:             #e4e6eb;
+$body-secondary-bg-dark:      #22262b;
+$body-secondary-color-dark:   #a8b3cf;
+$body-tertiary-bg-dark:       #2a2f36;
+$body-tertiary-color-dark:    #8b949e;
+$border-color-dark:           #2f343b;
+$link-color-dark:             $primary;
+$link-hover-color-dark:       lighten($primary, 8%);
+
 @import "bootstrap/scss/bootstrap";
 
 /*
  *= require_tree .
  *= require_self
  */
+
+// ---------------------------------------------------------------------------
+// Application-level polish on top of Bootstrap dark.
+// ---------------------------------------------------------------------------
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+// Tighten the navbar and use a flat dark surface
+.navbar {
+  background-color: #15181c;
+  border-bottom: 1px solid var(--bs-border-color);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  .navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--bs-body-color);
+  }
+
+  .nav-link {
+    color: var(--bs-secondary-color);
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+    transition: color 120ms ease;
+
+    &:hover, &:focus { color: var(--bs-body-color); }
+    &.active        { color: var(--bs-primary); }
+  }
+}
+
+// Cards: subtle, modest borders, tighter padding
+.card {
+  background-color: var(--bs-secondary-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: $border-radius;
+
+  .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--bs-border-color);
+    padding: 0.55rem 0.85rem;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--bs-secondary-color);
+  }
+
+  .card-body { padding: 0.85rem; }
+}
+
+// Tables: tighter padding and refined headers
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--bs-body-color);
+  --bs-table-border-color: var(--bs-border-color);
+  --bs-table-hover-bg: var(--bs-tertiary-bg);
+
+  th {
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--bs-secondary-color);
+  }
+
+  td, th { padding: 0.5rem 0.6rem; vertical-align: middle; }
+}
+
+// Forms
+.form-control, .form-select {
+  background-color: var(--bs-tertiary-bg);
+  border-color: var(--bs-border-color);
+  color: var(--bs-body-color);
+
+  &:focus {
+    background-color: var(--bs-tertiary-bg);
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(20, 184, 166, 0.18);
+    color: var(--bs-body-color);
+  }
+
+  &::placeholder { color: var(--bs-tertiary-color); }
+}
+
+.form-group.row { margin-bottom: 0.5rem; }
+.col-form-label { padding-top: 0.3rem; padding-bottom: 0.3rem; }
+
+label { color: var(--bs-secondary-color); font-weight: 500; font-size: 0.85rem; }
+
+// Buttons
+.btn {
+  font-weight: 500;
+  padding: 0.4rem 0.85rem;
+  border-radius: $border-radius-sm;
+
+  &.btn-sm { padding: 0.25rem 0.6rem; font-size: 0.825rem; }
+}
+
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+  --bs-btn-bg: #{$primary};
+  --bs-btn-hover-bg: #{darken($primary, 4%)};
+  --bs-btn-active-bg: #{darken($primary, 8%)};
+  --bs-btn-border-color: #{$primary};
+  --bs-btn-hover-border-color: #{darken($primary, 4%)};
+}
+
+.btn-secondary, .btn-outline-secondary {
+  --bs-btn-color: var(--bs-body-color);
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: var(--bs-border-color);
+  --bs-btn-hover-bg: var(--bs-tertiary-bg);
+  --bs-btn-hover-border-color: var(--bs-primary);
+  --bs-btn-hover-color: var(--bs-body-color);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #{$primary};
+  --bs-btn-border-color: #{$primary};
+  --bs-btn-hover-bg: #{$primary};
+  --bs-btn-hover-border-color: #{$primary};
+  --bs-btn-hover-color: #fff;
+}
+
+// Group consecutive action buttons without paragraph spacing
+.btn + .btn { margin-left: 0.4rem; }
+
+// Compact definition list for small key/value blocks
+.dl-compact {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 0.75rem;
+  row-gap: 0.2rem;
+  margin-bottom: 0.75rem;
+
+  dt {
+    color: var(--bs-secondary-color);
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+  dd {
+    margin: 0;
+    color: var(--bs-body-color);
+    font-size: 0.9rem;
+  }
+}
+
+// Small page header
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+
+  h1, h2, h3 {
+    font-weight: 600;
+    margin: 0;
+    font-size: 1.25rem;
+  }
+}
+
+// Sizing description panel (fed by app/javascript/sizing_definitions.js)
+.sizing-description {
+  font-size: 0.85rem;
+  color: var(--bs-secondary-color);
+  background-color: var(--bs-tertiary-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: $border-radius-sm;
+  padding: 0.5rem 0.65rem;
+
+  strong { color: var(--bs-body-color); }
+}
+
+// Scrollbar
+::-webkit-scrollbar       { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #353a42; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #4a525c; }
+::-webkit-scrollbar-track { background: var(--bs-body-bg); }

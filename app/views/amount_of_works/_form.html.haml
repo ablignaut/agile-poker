@@ -1,20 +1,17 @@
-= simple_form_for @amount_of_work, :wrapper => :horizontal_form do |f|
-  - if @amount_of_work.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@amount_of_work.errors.count, "error")} prohibited this amount_of_work from being saved:"
-      %ul
-        - @amount_of_work.errors.full_messages.each do |message|
-          %li= message
+.card
+  .card-body
+    = simple_form_for @amount_of_work, :wrapper => :horizontal_form do |f|
+      - if @amount_of_work.errors.any?
+        .alert.alert-danger
+          %strong= "#{pluralize(@amount_of_work.errors.count, 'error')} prohibited this amount_of_work from being saved:"
+          %ul.mb-0
+            - @amount_of_work.errors.full_messages.each do |message|
+              %li= message
 
-  .field
-    = f.input :tiny
-  .field
-    = f.input :little
-  .field
-    = f.input :fair
-  .field
-    = f.input :large
-  .field
-    = f.input :huge
-  .actions
-    = f.submit 'Save'
+      = f.input :tiny
+      = f.input :little
+      = f.input :fair
+      = f.input :large
+      = f.input :huge
+      .mt-2
+        = f.submit 'Save', class: 'btn btn-primary btn-sm'

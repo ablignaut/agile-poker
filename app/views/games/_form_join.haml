@@ -1,8 +1,12 @@
-= simple_form_for @games_player, :url => join_game_path(@game), :method => :post, :wrapper => :horizontal_form do |f|
-  .description
-    = f.label :name
-  = f.text_field :name
-  .form-check.my-2
-    = f.check_box :observer, class: "form-check-input"
-    = f.label :observer, "Join as observer", class: "form-check-label"
-  = f.submit 'join',:class => "btn btn-primary"
+.card
+  .card-header Join This Game
+  .card-body
+    = simple_form_for @games_player, :url => join_game_path(@game), :method => :post, :wrapper => :horizontal_form do |f|
+      .form-group.row.mb-2
+        = f.label :name, class: 'col-sm-3 col-form-label'
+        .col-sm-9
+          = f.text_field :name, class: 'form-control'
+      .form-check.mb-3
+        = f.check_box :observer, class: 'form-check-input'
+        = f.label :observer, 'Join as observer', class: 'form-check-label ms-1'
+      = f.submit 'Join', class: 'btn btn-primary btn-sm'

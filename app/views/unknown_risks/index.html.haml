@@ -1,27 +1,25 @@
-%h1 Listing unknown_risks
+.page-header
+  %h1 Unknowns / Risks
+  = link_to 'New', new_unknown_risk_path, class: 'btn btn-sm btn-primary'
 
-%table
-  %thead
-    %tr
-      %th None
-      %th Low
-      %th Some
-      %th Many
-      %th
-      %th
-      %th
-
-  %tbody
-    - @unknown_risks.each do |unknown_risk|
-      %tr
-        %td= unknown_risk.none
-        %td= unknown_risk.low
-        %td= unknown_risk.some
-        %td= unknown_risk.many
-        %td= link_to 'Show', unknown_risk
-        %td= link_to 'Edit', edit_unknown_risk_path(unknown_risk)
-        %td= link_to 'Destroy', unknown_risk, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Unknown risk', new_unknown_risk_path
+.card
+  .table-responsive
+    %table.table.table-hover.mb-0
+      %thead
+        %tr
+          %th None
+          %th Low
+          %th Some
+          %th Many
+          %th.text-end
+      %tbody
+        - @unknown_risks.each do |unknown_risk|
+          %tr
+            %td= unknown_risk.none
+            %td= unknown_risk.low
+            %td= unknown_risk.some
+            %td= unknown_risk.many
+            %td.text-end
+              = link_to 'Show',    unknown_risk,                  class: 'btn btn-sm btn-outline-primary me-1'
+              = link_to 'Edit',    edit_unknown_risk_path(unknown_risk), class: 'btn btn-sm btn-outline-secondary me-1'
+              = link_to 'Destroy', unknown_risk,                  class: 'btn btn-sm btn-outline-danger', data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }

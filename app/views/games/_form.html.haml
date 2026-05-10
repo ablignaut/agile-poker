@@ -1,19 +1,16 @@
-= simple_form_for @game do |f|
-  - if @game.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@game.errors.count, "error")} prohibited this game from being saved:"
-      %ul
-        - @game.errors.full_messages.each do |message|
-          %li= message
+.card
+  .card-body
+    = simple_form_for @game, :wrapper => :horizontal_form do |f|
+      - if @game.errors.any?
+        .alert.alert-danger
+          %strong= "#{pluralize(@game.errors.count, 'error')} prohibited this game from being saved:"
+          %ul.mb-0
+            - @game.errors.full_messages.each do |message|
+              %li= message
 
-  .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.input :amount_of_work_id, :collection => AmountOfWork.all
-  .field
-    = f.input :complexity_id, :collection => Complexity.all
-  .field
-    = f.input :unknown_risk_id, :collection => UnknownRisk.all
-  .actions
-    = f.submit 'Save'
+      = f.input :name
+      = f.input :amount_of_work_id, :collection => AmountOfWork.all
+      = f.input :complexity_id, :collection => Complexity.all
+      = f.input :unknown_risk_id, :collection => UnknownRisk.all
+      .mt-2
+        = f.submit 'Save', class: 'btn btn-primary btn-sm'
