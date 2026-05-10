@@ -1,0 +1,33 @@
+Test Plan — Jira Integration (Issue #27)
+========================================
+
+Scope
+-----
+1. Activate a story → fetch Jira details, display summary + Acceptance Criteria / Technical Review / QA Notes ticks/crosses.
+2. When all players have voted → re-fetch Jira details (cache invalidated, fresh data shown next render).
+3. Accept Estimate → post a comment on the Jira ticket with players-and-votes and high/low summary tables.
+4. Config is optional — feature silently no-ops when JIRA_API_URL / JIRA_EMAIL / JIRA_API_TOKEN are missing.
+
+Automated tests
+---------------
+[x] JiraClient: configured? reflects env vars                                                          (test/lib/jira_client_test.rb)   PASS
+[x] JiraClient: issue returns empty result when not configured                                         (test/lib/jira_client_test.rb)   PASS
+[x] JiraClient: issue parses summary and detects custom-field presence by name (case-insensitive)     (test/lib/jira_client_test.rb)   PASS
+[x] JiraClient: issue caches results across calls                                                     (test/lib/jira_client_test.rb)   PASS
+[x] JiraClient: refresh_issue invalidates the cache and re-fetches                                    (test/lib/jira_client_test.rb)   PASS
+[x] JiraClient: issue returns empty result on non-success HTTP response                                (test/lib/jira_client_test.rb)   PASS
+[x] JiraClient: add_comment posts to /rest/api/2/issue/{key}/comment with JSON body                   (test/lib/jira_client_test.rb)   PASS
+[x] JiraClient: add_comment is a no-op when not configured                                            (test/lib/jira_client_test.rb)   PASS
+[x] JiraCommentRenderer: renders player + summary tables in wiki markup                               (test/lib/jira_comment_renderer_test.rb)   PASS
+[x] JiraCommentRenderer: escapes pipe characters in player names                                      (test/lib/jira_comment_renderer_test.rb)   PASS
+[x] JiraCommentRenderer: shows placeholder summary when nobody has voted                              (test/lib/jira_comment_renderer_test.rb)   PASS
+[x] Full suite (`bin/rails test`) — no new regressions vs master                                       (12 pre-existing errors carried over, 0 new failures)   PASS
+
+Manual verification required (real Jira instance)
+-------------------------------------------------
+[m] After populating JIRA_API_URL / JIRA_EMAIL / JIRA_API_TOKEN, activating a story shows the ticket summary under the issue key.
+[m] Three indicators appear with ✓ (green) for fields that have values, ✗ (red) for fields that are empty.
+[m] When all players have voted, the Current Story card re-renders with up-to-date ticks/crosses (data refreshed).
+[m] Clicking Accept Estimate posts a comment on the Jira ticket containing the player-votes table and the high/low summary.
+[m] When JIRA_* env vars are absent, the UI is unchanged from before (no summary, no indicators), no errors in the log.
+[m] If the Jira API returns 404 / network error, the UI degrades gracefully and the request completes (no 500).

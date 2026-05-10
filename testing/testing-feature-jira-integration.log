@@ -1,0 +1,64 @@
+Testing Log — Jira Integration (Issue #27)
+==========================================
+
+Date: 2026-05-10
+Branch: feature/jira-integration
+
+Automated tests
+---------------
+
+$ bin/rails test test/lib/
+Running 18 tests in a single process (parallelization threshold is 50)
+Run options: --seed 13827
+
+# Running:
+
+..................
+
+Finished in 0.060495s, 297.5442 runs/s, 925.6932 assertions/s.
+18 runs, 56 assertions, 0 failures, 0 errors, 0 skips
+
+Breakdown of the 18 new test cases (all passing):
+
+JiraClientTest (11 cases):
+  PASS  configured? is true when api url, email and token are present
+  PASS  configured? is false when any required env var is missing
+  PASS  issue returns empty result when not configured
+  PASS  issue parses summary and detects custom field presence by name
+  PASS  issue caches results across calls
+  PASS  refresh_issue invalidates the cache and re-fetches
+  PASS  issue returns empty result on non-success response
+  PASS  add_comment posts to the v2 comment endpoint with a JSON body
+  PASS  add_comment is a no-op when not configured
+
+JiraCommentRendererTest (3 cases):
+  PASS  renders the player and summary tables in wiki markup
+  PASS  escapes pipe characters in names so they don't break the wiki table
+  PASS  shows a placeholder summary when nobody has voted
+
+Full suite
+----------
+
+$ bin/rails test
+... (omitted for brevity)
+Finished in 1.434589s, 60.6446 runs/s, 119.1979 assertions/s.
+87 runs, 171 assertions, 0 failures, 12 errors, 0 skips
+
+The 12 errors are all pre-existing on master (FK violations in destroy fixtures, missing main_index_url route helper). Count on master before this branch: 12 errors. Count on this branch: 12 errors. No new regressions introduced.
+
+Net new test cases added by this feature: 18.
+
+Manual verification (deferred — requires real Jira instance)
+-------------------------------------------------------------
+The following items require a live Jira instance with valid credentials and a real ticket. They are flagged for the user to verify in the browser after merge or in a staging environment:
+
+[m] Summary text and ✓/✗ indicators appear under the active story's issue key when JIRA_* env vars are configured.
+[m] Refresh of indicators occurs after the final vote is cast (cache invalidation through player_vote action).
+[m] Accept Estimate posts a comment on the Jira ticket with the votes table and the high/low summary.
+[m] When env vars are absent, the UI is unchanged and no errors are logged.
+[m] When the Jira API returns 4xx / 5xx / network errors, the request completes without raising and the UI degrades gracefully.
+
+Result
+------
+Automated suite: PASS (18/18 new tests; no new regressions in the broader suite).
+Manual browser verification against a real Jira instance: REQUIRED by the user before final acceptance — flagged in the PR test plan.
