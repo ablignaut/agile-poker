@@ -1,0 +1,19 @@
+complexity:
+  none: "You understand exactly what to do and there is nothing complex about it. No real explanation needed by the Product Owner. No questions."
+  little: "You understand what to do but there is a bit of complexity. Functionally well specified and understood — there might be a few questions but they're easily explained by the PO. Technically there's a known existing pattern in place; nothing new, just plug it in."
+  fair: "You understand what to do but there is some complex logic. Functionally mostly understood — questions are likely and the spec may need clarification. Technically something new (e.g. adjusting an existing pattern with new ideas), may need investigation, touches a more complex or risky/core area of the code."
+  complex: "You don't fully understand what to do and there is complex logic. Functionally new and not easy for the PO to explain in 10 minutes — many cases, settings, inputs and outputs; probably needs better specification with examples. Technically new, touches a very complex or brittle/untested part of the system, may require changes across multiple services or new infrastructure, with performance considerations."
+  very_complex: "Functionally complex AND technically complex."
+
+amount_of_work:
+  tiny: "Almost not worth talking about. Estimate no more than 30 minutes. No functional impact — e.g. changing a label on a screen, updating docs."
+  little: "Localized changes and impacts; existing ways to test; minimal or no setup. Estimate no more than 1 day. QA: testing a single screen / one import / a single calculation change. Technical: changing a single project or file."
+  fair: "New functionality or broader changes and impacts; probably requires some setup or data. Estimate no more than 3 days. QA: testing smaller new functionality, multiple parts of existing functionality, checking and updating regression cases. Technical: adding new functionality following existing patterns, changing multiple projects or services, performance optimisation."
+  large: "Large new functionality or significant reworking of existing functionality. Estimate no more than 5 days. QA: testing large new functionality (screens, imports, calcs etc.), large number of test cases to write/setup, adding new regression cases. Technical: adding large new functionality, possibly involving new projects/services, significant changes to existing services, performance optimisation."
+  huge: "Too hard to estimate — an indication that this should be broken down into smaller tasks."
+
+unknown_risk:
+  none: "No foreseen impact on the work involved."
+  low: "There is a chance of unknowns or risks impacting the work. Functionally the spec may look light on detail, or it's detailed but large enough that things will surface during implementation. Technically (suspect one of the following): low unit test coverage, unfamiliar code or service, possible performance concerns."
+  some: "There are definite unknowns or risks. At least one of the 'Low' examples is in play, or one of these: spec isn't detailed enough, a new service is being used, the technical approach is unclear, research is required to pick a 3rd-party component."
+  many: "Many of the above examples are in play."

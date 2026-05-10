@@ -3,6 +3,7 @@ import * as ActiveStorage from "@rails/activestorage"
 import * as bootstrap from "bootstrap"
 import "./channels/consumer"
 import "./channels/game_channel"
+import "./sizing_definitions"
 
 document.addEventListener('turbo:load', () => {
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
