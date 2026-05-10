@@ -8,13 +8,14 @@ It's not very pretty and I knocked this out as quickly as possible but it does w
 
 **Getting it running**
 
-Nothing special, it's a stock standard rails application.
+Nothing special, it's a stock standard rails application. Toolchain versions (Ruby, Node) are pinned in `mise.toml` and installed via [mise](https://mise.jdx.dev/).
+
 1. Clone the git repository
-2. Install dependencies:
-   - `bundle install` (Ruby gems)
-   - `npm install` (JavaScript dependencies including Bootstrap)
-3. Set up the database: `rails db:create db:migrate`
-4. Start the application: `bin/dev` (runs both Rails server and JavaScript build watcher)
+2. Install [mise](https://mise.jdx.dev/getting-started.html) if you don't already have it
+3. Install all dependencies:
+   - `mise install` — installs Ruby and Node at the pinned versions, then runs `bundle install` and `npm install` automatically via the project's `postinstall` hook
+4. Set up the database: `mise run create-db` (creates, migrates and seeds the database)
+5. Start the application: `mise run dev` (runs both Rails server and JavaScript build watcher via `bin/dev`)
 
 **Using the application**
 
