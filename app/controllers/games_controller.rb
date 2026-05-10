@@ -5,6 +5,8 @@ class GamesController < ApplicationController
   def player_vote
     return head(:forbidden) if @games_player.observer?
 
+    refresh_active_story_from_jira_if_all_voted
+
     GameChannel.broadcast(@game.id, @game.games_players)
     GameChannel.broadcast_stories(@game)
 
@@ -13,6 +15,14 @@ class GamesController < ApplicationController
       format.js
     end
   end
+
+  def refresh_active_story_from_jira_if_all_voted
+    return unless @game.games_players.players_all_voted?
+    active = @game.stories.active.first
+    return unless active
+    JiraClient.refresh_issue(active.issue_key)
+  end
+  private :refresh_active_story_from_jira_if_all_voted
 
   def clear_votes
     @game.games_players.update_all(:complexity => nil, :amount_of_work => nil, :unknown_risk => nil)

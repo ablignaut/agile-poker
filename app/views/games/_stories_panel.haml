@@ -2,16 +2,26 @@
 - pending_stories = stories.select { |s| s.status == 'pending' }
 - estimated_stories = stories.select { |s| s.status == 'estimated' }
 - jira_base_url = ENV['JIRA_URL'].presence
+- jira_details = active_story && JiraClient.configured? ? JiraClient.issue(active_story.issue_key) : nil
 
 .card.mb-3
   .card-header Current Story
   .card-body
     - if active_story
-      %h5.card-title.mb-2
+      %h5.card-title.mb-1
         - if jira_base_url
           = link_to active_story.issue_key, "#{jira_base_url}/browse/#{active_story.issue_key}", target: '_blank', rel: 'noopener'
         - else
           = active_story.issue_key
+      - if jira_details&.found? && jira_details.summary.present?
+        %div.text-body-secondary.small.mb-2= jira_details.summary
+      - if jira_details&.found?
+        .d-flex.gap-3.small.mb-2
+          - { 'Acceptance Criteria' => jira_details.acceptance_criteria_present, 'Technical Review' => jira_details.technical_review_present, 'QA Notes' => jira_details.qa_notes_present }.each do |label, present|
+            %span
+              %span{ class: (present ? 'text-success' : 'text-danger'), title: (present ? 'Set' : 'Empty') }= present ? '✓' : '✗'
+              \&nbsp;
+              = label
       - if active_story.description.present?
         %p.card-text.mb-2= active_story.description
       - if game.games_players.any? && game.games_players.players_all_voted?
