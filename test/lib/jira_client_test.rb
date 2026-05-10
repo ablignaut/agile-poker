@@ -37,12 +37,14 @@ class JiraClientTest < ActiveSupport::TestCase
     body = {
       "names" => {
         "summary" => "Summary",
+        "customfield_10016" => "Story Points",
         "customfield_10100" => "Acceptance Criteria",
         "customfield_10101" => "Technical Review",
         "customfield_10102" => "QA Review"
       },
       "fields" => {
         "summary" => "Build the thing",
+        "customfield_10016" => 3.0,
         "customfield_10100" => "Given/When/Then…",
         "customfield_10101" => nil,
         "customfield_10102" => ""
@@ -56,6 +58,18 @@ class JiraClientTest < ActiveSupport::TestCase
       assert result.acceptance_criteria_present
       refute result.technical_review_present
       refute result.qa_review_present
+      assert_equal "customfield_10016", result.story_points_field_id
+    end
+  end
+
+  test "issue discovers the story points field under the new 'Story point estimate' name" do
+    body = {
+      "names" => { "customfield_10020" => "Story point estimate" },
+      "fields" => { "customfield_10020" => nil }
+    }.to_json
+
+    stub_http_response(Net::HTTPSuccess, body: body) do
+      assert_equal "customfield_10020", JiraClient.issue("ABC-1").story_points_field_id
     end
   end
 
@@ -101,6 +115,29 @@ class JiraClientTest < ActiveSupport::TestCase
     ENV["JIRA_API_TOKEN"] = nil
     # No stub set — would raise if the method tried to make a request.
     assert_nil JiraClient.add_comment("ABC-1", "hello")
+  end
+
+  test "update_story_points PUTs the discovered field with a numeric value" do
+    Rails.cache.write("jira:issue:ABC-1", JiraClient::Result.new(found: true, story_points_field_id: "customfield_10016"))
+    captured = nil
+    stub_http_response(Net::HTTPSuccess, body: "{}", capture: ->(req) { captured = req }) do
+      JiraClient.update_story_points("ABC-1", 5)
+    end
+    assert_equal "PUT", captured.method
+    assert_match %r{/rest/api/3/issue/ABC-1$}, captured.path
+    assert_equal "application/json", captured["Content-Type"]
+    assert_equal({ "fields" => { "customfield_10016" => 5.0 } }, JSON.parse(captured.body))
+  end
+
+  test "update_story_points is a no-op when the story points field cannot be discovered" do
+    Rails.cache.write("jira:issue:ABC-1", JiraClient::Result.new(found: true, story_points_field_id: nil))
+    # No stub set — would raise if a request fired.
+    assert_nil JiraClient.update_story_points("ABC-1", 5)
+  end
+
+  test "update_story_points is a no-op when not configured" do
+    ENV["JIRA_API_TOKEN"] = nil
+    assert_nil JiraClient.update_story_points("ABC-1", 5)
   end
 
   private
