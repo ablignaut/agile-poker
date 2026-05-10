@@ -1,21 +1,19 @@
-%h1 Listing games
+.page-header
+  %h1 Games
+  = link_to 'New Game', new_game_path, class: 'btn btn-sm btn-primary'
 
-%table
-  %thead
-    %tr
-      %th Name
-      %th
-      %th
-      %th
-
-  %tbody
-    - @games.each do |game|
-      %tr
-        %td= game.name
-        %td= link_to 'Join', game_path(game)
-        %td= link_to 'Edit', edit_game_path(game)
-        %td= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Game', new_game_path
+.card
+  .table-responsive
+    %table.table.table-hover.mb-0
+      %thead
+        %tr
+          %th Name
+          %th.text-end
+      %tbody
+        - @games.each do |game|
+          %tr
+            %td= game.name
+            %td.text-end
+              = link_to 'Join',    game_path(game),       class: 'btn btn-sm btn-outline-primary me-1'
+              = link_to 'Edit',    edit_game_path(game),  class: 'btn btn-sm btn-outline-secondary me-1'
+              = link_to 'Destroy', game,                  class: 'btn btn-sm btn-outline-danger', data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }

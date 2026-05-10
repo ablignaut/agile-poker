@@ -1,29 +1,27 @@
-%h1 Listing complexities
+.page-header
+  %h1 Complexity
+  = link_to 'New', new_complexity_path, class: 'btn btn-sm btn-primary'
 
-%table
-  %thead
-    %tr
-      %th None
-      %th Little
-      %th Fair
-      %th Complex
-      %th Very complex
-      %th
-      %th
-      %th
-
-  %tbody
-    - @complexities.each do |complexity|
-      %tr
-        %td= complexity.none
-        %td= complexity.little
-        %td= complexity.fair
-        %td= complexity.complex
-        %td= complexity.very_complex
-        %td= link_to 'Show', complexity
-        %td= link_to 'Edit', edit_complexity_path(complexity)
-        %td= link_to 'Destroy', complexity, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Complexity', new_complexity_path
+.card
+  .table-responsive
+    %table.table.table-hover.mb-0
+      %thead
+        %tr
+          %th None
+          %th Little
+          %th Fair
+          %th Complex
+          %th Very complex
+          %th.text-end
+      %tbody
+        - @complexities.each do |complexity|
+          %tr
+            %td= complexity.none
+            %td= complexity.little
+            %td= complexity.fair
+            %td= complexity.complex
+            %td= complexity.very_complex
+            %td.text-end
+              = link_to 'Show',    complexity,                  class: 'btn btn-sm btn-outline-primary me-1'
+              = link_to 'Edit',    edit_complexity_path(complexity), class: 'btn btn-sm btn-outline-secondary me-1'
+              = link_to 'Destroy', complexity,                  class: 'btn btn-sm btn-outline-danger', data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }

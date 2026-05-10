@@ -1,20 +1,17 @@
-= simple_form_for @complexity, :wrapper => :horizontal_form do |f|
-  - if @complexity.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@complexity.errors.count, "error")} prohibited this complexity from being saved:"
-      %ul
-        - @complexity.errors.full_messages.each do |message|
-          %li= message
+.card
+  .card-body
+    = simple_form_for @complexity, :wrapper => :horizontal_form do |f|
+      - if @complexity.errors.any?
+        .alert.alert-danger
+          %strong= "#{pluralize(@complexity.errors.count, 'error')} prohibited this complexity from being saved:"
+          %ul.mb-0
+            - @complexity.errors.full_messages.each do |message|
+              %li= message
 
-  .field
-    = f.input :none
-  .field
-    = f.input :little
-  .field
-    = f.input :fair
-  .field
-    = f.input :complex
-  .field
-    = f.input :very_complex
-  .actions
-    = f.submit 'Save'
+      = f.input :none
+      = f.input :little
+      = f.input :fair
+      = f.input :complex
+      = f.input :very_complex
+      .mt-2
+        = f.submit 'Save', class: 'btn btn-primary btn-sm'

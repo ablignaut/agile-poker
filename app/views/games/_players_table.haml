@@ -1,102 +1,79 @@
 - voters    = players.voters
 - observers = players.observers
 
-%table.table
-  %tr
-    %th{:colspan => 4}
-      Player Votes
-  %tr
-    %th{:align => :left}
-      Player
-    %th{:align => :left}
-      Complexity
-    %th{:align => :left}
-      Amount of Work
-    %th{:align => :left}
-      Unknowns / Risks
-    %th{:align => :left}
-      Total Points
-    %th.table-primary{:align => :left}
-      Fibonacci Vote
-    %th{:align => :left}
-      voted?
-    %th{:align => :left}
-      Remove
-  - voters.each do |player|
-    %tr
-      %td
-        = player.name
-      %td
-        = show_player_votes ? player.complexity : 'x'
-      %td
-        = show_player_votes ? player.amount_of_work : 'x'
-      %td
-        = show_player_votes ? player.unknown_risk : 'x'
-      %td
-        = show_player_votes ? player.total_points : 'x'
-      %td.table-primary
-        = show_player_votes ? player.fibonacci_vote : 'x'
-      %td
-        = player.voted? ? 'Yes' : 'No'
-      %td
-        = link_to 'Remove', [player.game, player], data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }
-  - if show_player_votes
-    %tr
-      %td
-        Average
-      %td
-        #{as_average(voters.sum(:complexity), voters.players_voted.count)}
-      %td
-        #{as_average(voters.sum(:amount_of_work), voters.players_voted.count)}
-      %td
-        #{as_average(voters.sum(:unknown_risk), voters.players_voted.count)}
-      %td
-        #{as_average(voters.sum_total_points, voters.players_voted.count)}
-      %td.table-primary
-        #{as_average(voters.sum_fibonacci_vote, voters.players_voted.count)}
-      %td
+.card.mb-3
+  .card-header Players & Votes
+  .table-responsive
+    %table.table.table-hover.mb-0
+      %thead
+        %tr
+          %th Player
+          %th Complexity
+          %th Amount of Work
+          %th Unknowns / Risks
+          %th Total
+          %th.text-primary Fibonacci
+          %th Voted?
+          %th
+      %tbody
+        - voters.each do |player|
+          %tr
+            %td= player.name
+            %td= show_player_votes ? player.complexity : '—'
+            %td= show_player_votes ? player.amount_of_work : '—'
+            %td= show_player_votes ? player.unknown_risk : '—'
+            %td= show_player_votes ? player.total_points : '—'
+            %td.text-primary= show_player_votes ? player.fibonacci_vote : '—'
+            %td
+              - if player.voted?
+                %span.badge.bg-success-subtle.text-success-emphasis Yes
+              - else
+                %span.badge.bg-body-tertiary.text-secondary No
+            %td.text-end
+              = link_to 'Remove', [player.game, player], class: 'btn btn-sm btn-outline-danger', data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }
+        - if show_player_votes
+          %tr
+            %td
+              %strong Average
+            %td= as_average(voters.sum(:complexity), voters.players_voted.count)
+            %td= as_average(voters.sum(:amount_of_work), voters.players_voted.count)
+            %td= as_average(voters.sum(:unknown_risk), voters.players_voted.count)
+            %td= as_average(voters.sum_total_points, voters.players_voted.count)
+            %td.text-primary= as_average(voters.sum_fibonacci_vote, voters.players_voted.count)
+            %td
+            %td
 
 - if show_player_votes
-  %table.table
-    %tr
-      %th{:colspan => 4}
-        Summary
-    %tr
-      %th{:align => :left}
-        Metric
-      %th{:align => :left}
-        Player
-      %th{:align => :left}
-        Points Total
-      %th.table-primary{:align => :left}
-        Fibonacci Vote
-    %tr
-      %td
-        Highest
-      %td
-        #{voters.highest_voter.name}
-      %td
-        #{format_number(voters.highest_voter.total_points)}
-      %td.table-danger
-        #{format_number(voters.highest_voter.fibonacci_vote)}
-    %tr
-      %td
-        Lowest
-      %td
-        #{voters.lowest_voter.name}
-      %td
-        #{format_number(voters.lowest_voter.total_points)}
-      %td.table-success
-        #{format_number(voters.lowest_voter.fibonacci_vote)}
+  .card.mb-3
+    .card-header Summary
+    .table-responsive
+      %table.table.mb-0
+        %thead
+          %tr
+            %th Metric
+            %th Player
+            %th Points Total
+            %th.text-primary Fibonacci
+        %tbody
+          %tr
+            %td
+              %span.badge.bg-danger-subtle.text-white Highest
+            %td= voters.highest_voter.name
+            %td= format_number(voters.highest_voter.total_points)
+            %td.text-primary= format_number(voters.highest_voter.fibonacci_vote)
+          %tr
+            %td
+              %span.badge.bg-success-subtle.text-white Lowest
+            %td= voters.lowest_voter.name
+            %td= format_number(voters.lowest_voter.total_points)
+            %td.text-primary= format_number(voters.lowest_voter.fibonacci_vote)
 
 - if observers.any?
-  %table.table.mt-2
-    %tr
-      %th Observers
-    - observers.each do |observer|
-      %tr
-        %td
-          = observer.name
-          %span.badge.bg-secondary.ms-1 Observer
-        %td
-          = link_to 'Remove', [observer.game, observer], method: :delete, :remote => true, data: { confirm: 'Are you sure?' }
+  .card.mb-3
+    .card-header Observers
+    .card-body.py-2
+      .d-flex.flex-wrap.gap-2
+        - observers.each do |observer|
+          .d-flex.align-items-center.gap-2.px-2.py-1.rounded.border.border-secondary-subtle
+            = observer.name
+            = link_to 'remove', [observer.game, observer], class: 'small text-danger', data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }

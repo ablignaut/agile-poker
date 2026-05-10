@@ -1,29 +1,27 @@
-%h1 Listing amount_of_works
+.page-header
+  %h1 Amount of Work
+  = link_to 'New', new_amount_of_work_path, class: 'btn btn-sm btn-primary'
 
-%table
-  %thead
-    %tr
-      %th Tiny
-      %th Little
-      %th Fair
-      %th Large
-      %th Huge
-      %th
-      %th
-      %th
-
-  %tbody
-    - @amount_of_works.each do |amount_of_work|
-      %tr
-        %td= amount_of_work.tiny
-        %td= amount_of_work.little
-        %td= amount_of_work.fair
-        %td= amount_of_work.large
-        %td= amount_of_work.huge
-        %td= link_to 'Show', amount_of_work
-        %td= link_to 'Edit', edit_amount_of_work_path(amount_of_work)
-        %td= link_to 'Destroy', amount_of_work, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Amount of work', new_amount_of_work_path
+.card
+  .table-responsive
+    %table.table.table-hover.mb-0
+      %thead
+        %tr
+          %th Tiny
+          %th Little
+          %th Fair
+          %th Large
+          %th Huge
+          %th.text-end
+      %tbody
+        - @amount_of_works.each do |amount_of_work|
+          %tr
+            %td= amount_of_work.tiny
+            %td= amount_of_work.little
+            %td= amount_of_work.fair
+            %td= amount_of_work.large
+            %td= amount_of_work.huge
+            %td.text-end
+              = link_to 'Show',    amount_of_work,                 class: 'btn btn-sm btn-outline-primary me-1'
+              = link_to 'Edit',    edit_amount_of_work_path(amount_of_work), class: 'btn btn-sm btn-outline-secondary me-1'
+              = link_to 'Destroy', amount_of_work,                 class: 'btn btn-sm btn-outline-danger', data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }

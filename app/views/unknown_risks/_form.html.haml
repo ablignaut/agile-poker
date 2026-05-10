@@ -1,18 +1,16 @@
-= simple_form_for @unknown_risk, :wrapper => :horizontal_form do |f|
-  - if @unknown_risk.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@unknown_risk.errors.count, "error")} prohibited this unknown_risk from being saved:"
-      %ul
-        - @unknown_risk.errors.full_messages.each do |message|
-          %li= message
+.card
+  .card-body
+    = simple_form_for @unknown_risk, :wrapper => :horizontal_form do |f|
+      - if @unknown_risk.errors.any?
+        .alert.alert-danger
+          %strong= "#{pluralize(@unknown_risk.errors.count, 'error')} prohibited this unknown_risk from being saved:"
+          %ul.mb-0
+            - @unknown_risk.errors.full_messages.each do |message|
+              %li= message
 
-  .field
-    = f.input :none
-  .field
-    = f.input :low
-  .field
-    = f.input :some
-  .field
-    = f.input :many
-  .actions
-    = f.submit 'Save'
+      = f.input :none
+      = f.input :low
+      = f.input :some
+      = f.input :many
+      .mt-2
+        = f.submit 'Save', class: 'btn btn-primary btn-sm'

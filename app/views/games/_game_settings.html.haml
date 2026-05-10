@@ -1,12 +1,4 @@
-%p
-  %b Name:
-  = @game.name
-%p
-  %b Amount of work:
-  = @game.amount_of_work
-%p
-  %b Complexity:
-  = @game.complexity
-%p
-  %b Unknown risk:
-  = @game.unknown_risk
+.page-header
+  %h1= @game.name.presence || "Game ##{@game.id}"
+  .small.text-muted
+    Game ##{@game.id}

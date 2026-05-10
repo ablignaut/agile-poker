@@ -6,7 +6,7 @@
     "@popperjs/core": "^2.9.2",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
-    "bootstrap": "^5.0.1",
+    "bootstrap": "^5.3.3",
     "jquery": "^3.6.0"
   },
   "version": "0.1.0",
