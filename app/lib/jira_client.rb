@@ -8,6 +8,7 @@ module JiraClient
     :acceptance_criteria_present,
     :technical_review_present,
     :qa_review_present,
+    :story_points_field_id,
     :found,
     keyword_init: true
   ) do
@@ -25,6 +26,9 @@ module JiraClient
     technical_review_present:    "technical review",
     qa_review_present:           "qa review"
   }.freeze
+
+  # Jira Cloud uses "Story Points"; newer instances/teams use "Story point estimate".
+  STORY_POINTS_FIELD_NAMES = ["story points", "story point estimate"].freeze
 
   class << self
     def configured?
@@ -55,6 +59,26 @@ module JiraClient
       nil
     end
 
+    def update_story_points(issue_key, points)
+      return unless configured? && issue_key.present? && points.present?
+
+      field_id = issue(issue_key).story_points_field_id
+      unless field_id
+        Rails.logger.warn("JiraClient.update_story_points: no Story Points field discovered for #{issue_key}")
+        return
+      end
+
+      payload = { fields: { field_id => points.to_f } }.to_json
+      response = perform_request(:put, "/rest/api/3/issue/#{issue_key}", body: payload, content_type: "application/json")
+      unless response.is_a?(Net::HTTPSuccess)
+        Rails.logger.warn("JiraClient.update_story_points got #{response.code} for #{issue_key}: #{response.body}")
+      end
+      response
+    rescue => e
+      Rails.logger.warn("JiraClient.update_story_points failed for #{issue_key}: #{e.class}: #{e.message}")
+      nil
+    end
+
     private
 
     def fetch_issue(issue_key)
@@ -70,7 +94,8 @@ module JiraClient
         summary: fields["summary"],
         acceptance_criteria_present: field_present_by_name?(names, fields, FIELD_LABELS[:acceptance_criteria_present]),
         technical_review_present:    field_present_by_name?(names, fields, FIELD_LABELS[:technical_review_present]),
-        qa_review_present:           field_present_by_name?(names, fields, FIELD_LABELS[:qa_review_present])
+        qa_review_present:           field_present_by_name?(names, fields, FIELD_LABELS[:qa_review_present]),
+        story_points_field_id:       find_field_id_by_names(names, STORY_POINTS_FIELD_NAMES)
       )
     rescue => e
       Rails.logger.warn("JiraClient.fetch_issue failed for #{issue_key}: #{e.class}: #{e.message}")
@@ -78,11 +103,15 @@ module JiraClient
     end
 
     def field_present_by_name?(names, fields, label)
-      target = label.downcase
-      id, _ = names.find { |_, n| n.to_s.downcase == target }
+      id = find_field_id_by_names(names, [label])
       return false unless id
-      value = fields[id]
-      !blank_value?(value)
+      !blank_value?(fields[id])
+    end
+
+    def find_field_id_by_names(names, candidates)
+      targets = candidates.map { |c| c.to_s.downcase }
+      id, _ = names.find { |_, n| targets.include?(n.to_s.downcase) }
+      id
     end
 
     def blank_value?(value)
@@ -98,7 +127,12 @@ module JiraClient
       http.open_timeout = 5
       http.read_timeout = 10
 
-      request_class = method == :get ? Net::HTTP::Get : Net::HTTP::Post
+      request_class = case method
+                      when :get  then Net::HTTP::Get
+                      when :put  then Net::HTTP::Put
+                      when :post then Net::HTTP::Post
+                      else raise ArgumentError, "unsupported method #{method.inspect}"
+                      end
       request = request_class.new(uri.request_uri)
       request.basic_auth(email, token)
       request["Accept"] = "application/json"

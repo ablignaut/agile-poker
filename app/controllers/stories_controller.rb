@@ -49,6 +49,8 @@ class StoriesController < ApplicationController
 
     @story.update!(status: 'estimated', estimate: params[:estimate].presence&.to_d)
 
+    JiraClient.update_story_points(@story.issue_key, @story.estimate) if @story.estimate
+
     @game.games_players.update_all(complexity: nil, amount_of_work: nil, unknown_risk: nil)
 
     next_story = @game.stories.pending.first
