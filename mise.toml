@@ -1,0 +1,14 @@
+[tools]
+ruby = "3.4.1"
+node = "lts"
+
+[hooks]
+postinstall = "bundle install && npm install"
+
+[tasks.create-db]
+description = "Create, migrate and seed the database"
+run = "rails db:create db:migrate db:seed"
+
+[tasks.dev]
+description = "Start the Rails server and JS build watcher"
+run = "bin/dev"
